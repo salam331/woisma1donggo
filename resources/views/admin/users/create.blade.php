@@ -20,8 +20,8 @@
                         <!-- Name -->
                         <div class="mb-4">
                             <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-                            <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus
-                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <x-text-input-admin id="name" type="text" name="name" value="{{ old('name') }}" required autofocus
+                                   class="block mt-1 w-full"/>
                             @error('name')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -30,8 +30,8 @@
                         <!-- Email -->
                         <div class="mb-4">
                             <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                            <input id="email" type="email" name="email" value="{{ old('email') }}" required
-                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <x-text-input-admin id="email" type="email" name="email" value="{{ old('email') }}" required
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
                             @error('email')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -40,8 +40,8 @@
                         <!-- Password -->
                         <div class="mb-4">
                             <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                            <input id="password" type="password" name="password" required
-                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <x-text-input-admin id="password" type="password" name="password" required
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
                             @error('password')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -50,15 +50,17 @@
                         <!-- Confirm Password -->
                         <div class="mb-4">
                             <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
-                            <input id="password_confirmation" type="password" name="password_confirmation" required
-                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <x-text-input-admin id="password_confirmation" type="password" name="password_confirmation" required
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
                         </div>
 
                         <!-- Role -->
                         <div class="mb-6">
                             <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
                             <select id="role" name="role" required
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                    class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2
+                                        text-gray-800 shadow-sm outline-none
+                                        focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition">
                                 <option value="">Pilih Role</option>
                                 @foreach($roles as $role)
                                 <option value="{{ $role->name }}" {{ old('role') == $role->name ? 'selected' : '' }}>
