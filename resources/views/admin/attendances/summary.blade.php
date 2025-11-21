@@ -1,6 +1,7 @@
 <x-admin-layout>
     <!-- Bootstrap CSS for Modal -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    {{-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> --}}
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -131,114 +132,113 @@
                     </div>
 
                     <!-- Modal for Chart -->
-                    <div class="modal fade" id="attendanceChartModal" tabindex="-1" role="dialog" aria-labelledby="attendanceChartModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="attendanceChartModalLabel">Grafik Kehadiran Siswa</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="mb-4">
-                                        <h6 class="font-weight-bold">Nama Siswa: <span id="modal-student-name"></span></h6>
-                                        <p class="mb-1">Kelas: <span id="modal-class-name"></span></p>
-                                        <p class="mb-1">Total Hari: <span id="modal-total-days"></span></p>
-                                        <p class="mb-3">Persentase Hadir: <span id="modal-present-percentage"></span>%</p>
-                                    </div>
-                                    <canvas id="attendanceChart" width="400" height="200"></canvas>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                                </div>
+                    <!-- Modal Tailwind (Alpine.js) -->
+                    <div 
+                        x-data="{ open: false }" 
+                        x-show="open" 
+                        style="display: none"
+                        x-on:open-modal.window="open = true"
+                        x-on:close-modal.window="open = false"
+                        class="fixed inset-0 z-50 flex items-center justify-center"
+                    >
+                        <!-- Background -->
+                        <div 
+                            class="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                            x-on:click="open = false"
+                        ></div>
+
+                        <!-- Modal Box -->
+                        <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full p-6 relative z-20">
+
+                            <!-- Title -->
+                            <h2 class="text-xl font-bold mb-1">Grafik Kehadiran Siswa</h2>
+                            <p class="text-sm text-gray-600 mb-4">Ringkasan kehadiran berdasarkan kategori</p>
+
+                            <!-- Info Siswa -->
+                            <div class="bg-gray-50 rounded-lg p-4 mb-4 border">
+                                <p><span class="font-semibold">Nama:</span> <span id="modal-student-name"></span></p>
+                                <p><span class="font-semibold">Kelas:</span> <span id="modal-class-name"></span></p>
+                                <p><span class="font-semibold">Total Hari:</span> <span id="modal-total-days"></span></p>
+                                <p><span class="font-semibold">Persentase Hadir:</span> <span id="modal-present-percentage"></span>%</p>
+                            </div>
+
+                            <!-- Chart -->
+                            <canvas id="attendanceChart" class="w-full h-52"></canvas>
+
+                            <!-- Footer -->
+                            <div class="text-right mt-6">
+                                <button
+                                    class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-800"
+                                    x-on:click="open = false"
+                                >
+                                    Tutup
+                                </button>
                             </div>
                         </div>
                     </div>
 
+
                     <!-- JavaScript for Chart -->
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
                     <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            let chartInstance = null;
+                    document.addEventListener('DOMContentLoaded', function () {
+                        let chartInstance = null;
 
-                            document.querySelectorAll('.view-chart-btn').forEach(button => {
-                                button.addEventListener('click', function() {
-                                    const studentName = this.getAttribute('data-student-name');
-                                    const className = this.getAttribute('data-class-name');
-                                    const present = parseInt(this.getAttribute('data-present'));
-                                    const absent = parseInt(this.getAttribute('data-absent'));
-                                    const late = parseInt(this.getAttribute('data-late'));
-                                    const excused = parseInt(this.getAttribute('data-excused'));
-                                    const total = parseInt(this.getAttribute('data-total'));
-                                    const percentage = parseFloat(this.getAttribute('data-percentage'));
+                        document.querySelectorAll('.view-chart-btn').forEach(button => {
+                            button.addEventListener('click', function () {
 
-                                    // Update modal content
-                                    document.getElementById('modal-student-name').textContent = studentName;
-                                    document.getElementById('modal-class-name').textContent = className;
-                                    document.getElementById('modal-total-days').textContent = total;
-                                    document.getElementById('modal-present-percentage').textContent = percentage.toFixed(2);
+                                const studentName = this.dataset.studentName;
+                                const className   = this.dataset.className;
+                                const present     = parseInt(this.dataset.present);
+                                const absent      = parseInt(this.dataset.absent);
+                                const late        = parseInt(this.dataset.late);
+                                const excused     = parseInt(this.dataset.excused);
+                                const total       = parseInt(this.dataset.total);
+                                const percentage  = parseFloat(this.dataset.percentage);
 
-                                    // Destroy previous chart if exists
-                                    if (chartInstance) {
-                                        chartInstance.destroy();
-                                    }
+                                // Set modal info
+                                document.getElementById('modal-student-name').textContent  = studentName;
+                                document.getElementById('modal-class-name').textContent    = className;
+                                document.getElementById('modal-total-days').textContent    = total;
+                                document.getElementById('modal-present-percentage').textContent = percentage.toFixed(2);
 
-                                    // Create new chart
-                                    const ctx = document.getElementById('attendanceChart').getContext('2d');
-                                    chartInstance = new Chart(ctx, {
-                                        type: 'bar',
-                                        data: {
-                                            labels: ['Hadir', 'Tidak Hadir', 'Terlambat', 'Izin'],
-                                            datasets: [{
-                                                label: 'Jumlah Hari',
-                                                data: [present, absent, late, excused],
-                                                backgroundColor: [
-                                                    'rgba(34, 197, 94, 0.8)', // Green for present
-                                                    'rgba(239, 68, 68, 0.8)', // Red for absent
-                                                    'rgba(245, 158, 11, 0.8)', // Yellow for late
-                                                    'rgba(59, 130, 246, 0.8)' // Blue for excused
-                                                ],
-                                                borderColor: [
-                                                    'rgba(34, 197, 94, 1)',
-                                                    'rgba(239, 68, 68, 1)',
-                                                    'rgba(245, 158, 11, 1)',
-                                                    'rgba(59, 130, 246, 1)'
-                                                ],
-                                                borderWidth: 1
-                                            }]
-                                        },
-                                        options: {
-                                            responsive: true,
-                                            plugins: {
-                                                legend: {
-                                                    display: false
-                                                },
-                                                tooltip: {
-                                                    callbacks: {
-                                                        label: function(context) {
-                                                            return context.label + ': ' + context.parsed.y + ' hari';
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            scales: {
-                                                y: {
-                                                    beginAtZero: true,
-                                                    ticks: {
-                                                        stepSize: 1
-                                                    }
-                                                }
-                                            }
+                                // Destroy old chart
+                                if (chartInstance) chartInstance.destroy();
+
+                                // Build new chart
+                                const ctx = document.getElementById('attendanceChart').getContext('2d');
+                                chartInstance = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: ['Hadir', 'Tidak Hadir', 'Terlambat', 'Izin'],
+                                        datasets: [{
+                                            label: 'Jumlah Hari',
+                                            data: [present, absent, late, excused],
+                                            backgroundColor: [
+                                                'rgba(34, 197, 94, 0.8)',
+                                                'rgba(239, 68, 68, 0.8)',
+                                                'rgba(245, 158, 11, 0.8)',
+                                                'rgba(59, 130, 246, 0.8)',
+                                            ],
+                                            borderWidth: 0
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        plugins: {
+                                            legend: { display: false }
                                         }
-                                    });
-
-                                    // Show modal
-                                    $('#attendanceChartModal').modal('show');
+                                    }
                                 });
+
+                                // OPEN modal Tailwind / Alpine
+                                window.dispatchEvent(new CustomEvent('open-modal'));
                             });
                         });
+                    });
                     </script>
+
                 </div>
             </div>
         </div>

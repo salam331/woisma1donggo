@@ -16,7 +16,24 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+            {{-- cara include layouts sesuai dengan role --}}
+            @auth
+                @if(Auth::user()->hasRole('admin'))
+                    @include('layouts.navigation-admin')
+                @elseif(Auth::user()->hasRole('guru'))
+                    @include('layouts.navigation-guru')
+                @elseif(Auth::user()->hasRole('siswa'))
+                    @include('layouts.navigation-siswa')
+                @elseif(Auth::user()->hasRole('orang_tua'))
+                    @include('layouts.navigation-orangtua')
+                @else
+                    @include('layouts.navigation-publik')
+                @endif
+            @else
+                @include('layouts.navigation-publik')
+            @endauth
+
+            {{-- @include('layouts.navigation-admin') --}}
 
             <!-- Page Heading -->
             @isset($header)
