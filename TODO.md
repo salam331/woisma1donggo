@@ -1,3 +1,0 @@
-- [x] Add additional images section to resources/views/admin/galleries/create.blade.php with dynamic add/remove via JavaScript
-- [x] Fix resources/views/admin/galleries/edit.blade.php to include hidden inputs for existing additional image paths
-- [x] Update app/Http/Controllers/Admin/GalleryController.php update method to delete removed additional images from storage

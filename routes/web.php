@@ -1,5 +1,17 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
+// Public Controllers
+use App\Http\Controllers\SchoolProfilePublicController;
+use App\Http\Controllers\AnnouncementPublicController;
+use App\Http\Controllers\GalleryPublicController;
+use App\Http\Controllers\ContactFormController;
+
+// Profile Controller
+use App\Http\Controllers\ProfileController;
+
+// Admin Controllers
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\TeacherController;
@@ -15,106 +27,160 @@ use App\Http\Controllers\Admin\SchoolProfileController;
 use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\ContactMessageController;
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| PUBLIC ROUTES
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
-    return view('welcome', ['layout' => 'publik']);
-})->name('home');
+    return view('dashboard', ['layout' => 'publik']);
+})->name('dashboard');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard.auth');
 
-use App\Http\Controllers\SchoolProfilePublicController;
-use App\Http\Controllers\AnnouncementPublicController;
-use App\Http\Controllers\GalleryPublicController;
-
+// Profil Sekolah
 Route::get('/about', [SchoolProfilePublicController::class, 'show'])->name('about');
 
+// Galeri Publik
 Route::get('/gallery', [GalleryPublicController::class, 'index'])->name('gallery');
-Route::get('/gallery/{id}', [GalleryPublicController::class, 'show'])->name('gallery.show');
+Route::get('/gallery/{id}', [GalleryPublicController::class, 'show'])
+    ->name('gallery.show'); // PERBAIKAN: route tidak bentrok dengan admin karena admin pakai prefix "admin"
 
+// Informasi Akademik
+Route::get('/informasi-akademik', function () {
+    return view('informasi-akademik');
+})->name('informasi-akademik');
+
+// Pengumuman Publik
 Route::get('/announcements', [AnnouncementPublicController::class, 'index'])->name('announcements');
 
-Route::get('/contact', function () {
-    return view('contact', ['layout' => 'publik']);
-})->name('contact');
+// Contact Page
+Route::get('/contact', fn() => view('contact', ['layout' => 'publik']))->name('contact');
+Route::post('/contact', [ContactFormController::class, 'store'])->name('contact.store');
+
+
+/*
+|--------------------------------------------------------------------------
+| PROFILE (Authenticated)
+|--------------------------------------------------------------------------
+*/
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile',  [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN ROUTES
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // User Management
+    // Users
     Route::resource('users', UserController::class);
 
-    // Teacher Management
+    // Teachers
     Route::resource('teachers', TeacherController::class);
 
-    // Student Management
+    // Students
     Route::resource('students', StudentController::class);
 
-    // Parent Management
+    // Parents
     Route::resource('parents', ParentController::class);
 
-    // Class Management
+    // Classes
     Route::resource('classes', SchoolClassController::class);
     Route::get('classes/{class}/students', [SchoolClassController::class, 'students'])->name('classes.students');
 
-
-    // Subject Management
+    // Subjects
     Route::resource('subjects', SubjectController::class);
 
-    // Material Management
+    // Materials
     Route::resource('materials', MaterialController::class);
     Route::get('materials/{material}/download', [MaterialController::class, 'download'])->name('materials.download');
 
-    // Schedule Management
+    // Schedules
     Route::resource('schedules', ScheduleController::class);
 
-    // Attendance Management
+    // Attendance
     Route::get('attendances/summary', [AttendanceController::class, 'summary'])->name('attendances.summary');
     Route::get('attendances/class/{classId}', [AttendanceController::class, 'indexByClass'])->name('attendances.index-by-class');
     Route::get('attendances/class/{classId}/subject/{subjectId}', [AttendanceController::class, 'indexBySubject'])->name('attendances.index-by-subject');
     Route::resource('attendances', AttendanceController::class);
 
-    // Invoice Management
+    // Invoices
     Route::resource('invoices', InvoiceController::class);
 
-    // School Profile Management
+    // School Profiles
     Route::resource('school-profiles', SchoolProfileController::class);
 
-    // Announcement Management
+    // Announcements
     Route::resource('announcements', AnnouncementController::class);
 
-    // Gallery Management
+    // Galleries
     Route::resource('galleries', GalleryController::class);
 
-    // Contact Message Management
+    // Contact Messages
     Route::resource('contact-messages', ContactMessageController::class);
 });
 
-Route::middleware(['auth', 'role:guru'])->prefix('guru')->name('guru.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('guru.dashboard');
-    })->name('dashboard');
+
+/*
+|--------------------------------------------------------------------------
+| GURU ROUTES
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'role:guru'])
+    ->prefix('guru')
+    ->name('guru.')
+    ->group(function () {
+
+    Route::get('/dashboard', fn() => view('guru.dashboard'))->name('dashboard');
 });
 
-Route::middleware(['auth', 'role:siswa'])->prefix('siswa')->name('siswa.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('siswa.dashboard');
-    })->name('dashboard');
+
+/*
+|--------------------------------------------------------------------------
+| SISWA ROUTES
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'role:siswa'])
+    ->prefix('siswa')
+    ->name('siswa.')
+    ->group(function () {
+
+    Route::get('/dashboard', fn() => view('siswa.dashboard'))->name('dashboard');
 });
 
-Route::middleware(['auth', 'role:orang_tua'])->prefix('orang_tua')->name('orang_tua.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('orang_tua.dashboard');
-    })->name('dashboard');
+
+/*
+|--------------------------------------------------------------------------
+| ORANG TUA ROUTES
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'role:orang_tua'])
+    ->prefix('orang_tua')
+    ->name('orang_tua.')
+    ->group(function () {
+
+    Route::get('/dashboard', fn() => view('orang_tua.dashboard'))->name('dashboard');
 });
 
-require __DIR__.'/auth.php';
+
+require __DIR__ . '/auth.php';

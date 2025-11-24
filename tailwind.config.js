@@ -7,22 +7,17 @@ export default {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
-    ],
-
-    safelist: [
-        'bg-blue-500',
-        'hover:bg-blue-700',
-        'text-white',
-        'font-bold',
-        'py-2',
-        'px-4',
-        'rounded',
+        './resources/js/**/*.js',
     ],
 
     theme: {
         extend: {
+            colors: {
+                primary: '#4f46e5',
+                secondary: '#64748b',
+            },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
             },
         },
     },

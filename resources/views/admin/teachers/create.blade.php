@@ -1,26 +1,30 @@
-<x-admin-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Tambah Guru Baru
-            </h2>
-            <a href="{{ route('admin.teachers.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                Kembali
-            </a>
-        </div>
-    </x-slot>
+{{-- resources/views/admin/teachers/create.blade.php --}}
+@extends('layouts.app')
 
+@section('title', 'Tambah Guru Baru')
+
+@section('content')
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
+                    {{-- Header --}}
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                            Tambah Guru Baru
+                        </h2>
+                        <a href="{{ route('admin.teachers.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                            Kembali
+                        </a>
+                    </div>
+
+                    {{-- Form --}}
                     <form method="POST" action="{{ route('admin.teachers.store') }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Left Column -->
                             <div class="space-y-4">
-                                <!-- NIP -->
                                 <div>
                                     <label for="nip" class="block text-sm font-medium text-gray-700">NIP</label>
                                     <input id="nip" type="text" name="nip" value="{{ old('nip') }}" required
@@ -29,8 +33,6 @@
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
-
-                                <!-- Name -->
                                 <div>
                                     <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
                                     <input id="name" type="text" name="name" value="{{ old('name') }}" required
@@ -39,8 +41,6 @@
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
-
-                                <!-- Email -->
                                 <div>
                                     <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                                     <input id="email" type="email" name="email" value="{{ old('email') }}" required
@@ -49,8 +49,6 @@
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
-
-                                <!-- Password -->
                                 <div>
                                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                                     <input id="password" type="password" name="password" required
@@ -59,15 +57,15 @@
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
-
-                                <!-- Confirm Password -->
                                 <div>
                                     <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
                                     <input id="password_confirmation" type="password" name="password_confirmation" required
                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                                 </div>
+                            </div>
 
-                                <!-- Phone -->
+                            <!-- Right Column -->
+                            <div class="space-y-4">
                                 <div>
                                     <label for="phone" class="block text-sm font-medium text-gray-700">Telepon</label>
                                     <input id="phone" type="text" name="phone" value="{{ old('phone') }}"
@@ -76,8 +74,6 @@
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
-
-                                <!-- Gender -->
                                 <div>
                                     <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
                                     <select id="gender" name="gender" required
@@ -90,11 +86,6 @@
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
-                            </div>
-
-                            <!-- Right Column -->
-                            <div class="space-y-4">
-                                <!-- Birth Date -->
                                 <div>
                                     <label for="birth_date" class="block text-sm font-medium text-gray-700">Tanggal Lahir</label>
                                     <input id="birth_date" type="date" name="birth_date" value="{{ old('birth_date') }}"
@@ -103,8 +94,6 @@
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
-
-                                <!-- Subject Specialization -->
                                 <div>
                                     <label for="subject_specialization" class="block text-sm font-medium text-gray-700">Spesialisasi Mata Pelajaran</label>
                                     <input id="subject_specialization" type="text" name="subject_specialization" value="{{ old('subject_specialization') }}"
@@ -113,8 +102,6 @@
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
-
-                                <!-- Photo -->
                                 <div>
                                     <label for="photo" class="block text-sm font-medium text-gray-700">Foto</label>
                                     <input id="photo" type="file" name="photo" accept="image/*"
@@ -148,4 +135,4 @@
             </div>
         </div>
     </div>
-</x-admin-layout>
+@endsection

@@ -1,59 +1,257 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+✅ SISTEM ADMINISTRASI SMAN 1 DONGGO
+Teknologi utama:
+•	Blade Components
+•	TailwindCSS v3 (bukan v4)
+•	UI preset MerakiUI
+•	Responsive-first (HP → Tablet → Desktop)
+•	Clean Architecture (Controller + Service + Repository)
+•	Middleware: role-based
+•	Sidebar otomatis menyesuaikan role
+________________________________________
+🟦 Mulai Prompt Utama
+Gunakan instruksi berikut untuk membangun website Sistem Administrasi SMAN 1 DONGGO secara lengkap menggunakan Laravel Blade + Tailwind (MerakiUI). Buatkan struktur folder, arsitektur Laravel, contoh kode Blade, komponen Tailwind, migrasi database, seeding, controller, routing, middleware role-based, layout umum, layout khusus, dan desain UI responsif. Semua tampilan wajib mobile-first dan modern sesuai style MerakiUI.
+________________________________________
+🟩 1. Konsep & Desain Utama
+Bangun sistem web dengan karakteristik:
+✦ Wajib:
+•	UI modern bergaya MerakiUI (https://merakiui.com/)
+•	Navigasi responsif:
+o	Mobile → hamburger menu + drawer
+o	Desktop → sidebar (untuk role), navbar fixed
+•	Komponen Blade reusable
+•	Dark mode
+•	SEO-friendly untuk halaman publik
+✦ UI Global (Semua role + halaman publik)
+•	Header
+•	Footer
+•	Mobile navbar
+•	Global search bar (opsional)
+•	Modal umum (confirm, alert, success) yang secara otomatis menghilang selama 2 detik
+________________________________________
+🟩 2. Halaman Publik
+Buat halaman publik dengan desain modern bergaya MerakiUI:
+2.1 Beranda
+•	Hero section full-width
+•	CTA button
+•	Visi dan Misi
+•	Keunggulan Sekolah (icons)
+•	CTA “Lihat Profil Sekolah”
+•	Footer modern
+2.2 Profil Sekolah
+•	Sejarah
+•	Guru & Staf (grid cards)
+•	Prestasi
+•	Fasilitas (gallery grid)
+2.3 Informasi Akademik
+•	Jurusan
+•	Kurikulum
+•	Ekstrakurikuler
+2.4 Berita & Pengumuman
+•	Card grid
+•	Pagination
+•	Detail berita
+2.5 Galeri
+•	Gallery foto/video
+•	Modal zoom responsive
+2.6 Kontak & Maps
+•	Form Contact Message
+•	Embedded Google Maps
+________________________________________
+🟩 3. Role dan Fitur Backend
+Siapkan middleware + guard untuk 4 role:
+admin, teacher, student, parent.
+Sidebar menyesuaikan menu berdasarkan role.
+________________________________________
+🟦 3.1 Role ADMIN
+Sidebar item admin:
+1.	Dashboard
+2.	Users (index + show)
+3.	Teachers (CRUD + show)
+4.	Students (CRUD + show)
+5.	Parents (CRUD + show)
+6.	Classes (CRUD + show)
+7.	Subjects (CRUD + show)
+8.	Materials (CRUD + show)
+9.	Schedules (CRUD + show)
+10.	Attendances (CRUD + show berdasarkan kelas -> mapel -> siswa -> riwayat absensi + summary dalam modal yang berisi grafik batang)
+11.	Invoices (CRUD + show)
+________________________________________
+🟦 3.2 Role GURU
+Sidebar guru:
+1.	Dashboard
+2.	Classes (lihat daftar siswa & input absensi)
+3.	Attendances (CRUD + show)
+4.	Schedule (daily/weekly)
+5.	Materials (CRUD + show)
+6.	Subjects (index + show)
+7.	Announcements (index)
+8.	Grades (CRUD + show)
+9.	Exams (CRUD + input nilai + show)
+________________________________________
+🟦 3.3 Role SISWA
+Sidebar siswa:
+1.	Dashboard
+2.	Schedule (daily/weekly)
+3.	Attendance (show per mapel)
+4.	Grades (index)
+5.	Materials (index, show, download)
+6.	Announcements (index + show)
+7.	Invoices (index + show)
+________________________________________
+🟦 3.4 Role ORANG TUA
+Orang tua dapat memiliki lebih dari 1 siswa.
+Sidebar orang tua:
+1.	Dashboard
+2.	Announcements
+3.	Detail Siswa (Personal Info, Wali Kelas, Orang Tua)
+4.	Attendance (index)
+5.	Grades (index)
+6.	Invoices (index)
+________________________________________
+🟩 4. Struktur Layout Blade
+Buat komponen Blade berikut:
+Global:
+/resources/views/components/
+  ├── header.blade.php
+  ├── footer.blade.php
+  ├── mobile-nav.blade.php
+  ├── sidebar-admin.blade.php
+  ├── sidebar-teacher.blade.php
+  ├── sidebar-student.blade.php
+  ├── sidebar-parent.blade.php
+  ├── card.blade.php
+  ├── table.blade.php
+  ├── form-input.blade.php
+  ├── btn-primary.blade.php
+  ├── btn-secondary.blade.php
+  └── modal.blade.php
+Layout utama:
+/resources/views/layouts/
+  ├── app.blade.php     (untuk semua role)
+  ├── guest.blade.php   (untuk halaman publik)
+________________________________________
+🟩 5. Tailwind & MerakiUI
+Instruksi konfigurasi:
+•	Install Tailwind v3 (bukan v4)
+•	Integrasikan MerakiUI:
+o	copy komponen
+o	gunakan warna-warna MerakiUI
+•	Buat theme custom di tailwind.config:
+Contoh:
+extend: {
+  colors: {
+    primary: "#4f46e5",
+    secondary: "#64748b",
+  },
+  fontFamily: {
+    sans: ['Inter', 'sans-serif'],
+  },
+}
+Semua komponen wajib dibuat responsif menggunakan MerakiUI patterns.
+________________________________________
+🟩 6. Database & Migrasi
+Buat rancangan tabel:
+Tabel utama:
+•	users
+•	roles
+•	teachers
+•	students
+•	parents
+•	parent_student
+•	classes
+•	subjects
+•	materials
+•	schedules
+•	attendances
+•	exams
+•	grades
+•	invoices
+•	announcements
+•	contact_messages
+•	news
+•	galleries
+Buat seluruh migrasi dengan foreign key lengkap, cascade delete, timestamp wajib.
+________________________________________
+🟩 7. Routing
+Gunakan:
+•	Web routes untuk public + dashboard
+•	Route group per role
+•	Middleware: role:admin, role:teacher, dll
+Contoh:
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->group(function () {
+        Route::resource('teachers', TeacherController::class);
+    });
+________________________________________
+🟩 8. Controller + Service Layer
+Kamu harus membangunkan semua controller berikut:
+Admin
+•	UserController
+•	TeacherController
+•	StudentController
+•	ParentController
+•	ClassController
+•	SubjectController
+•	MaterialController
+•	ScheduleController
+•	AttendanceController
+•	InvoiceController
+Guru
+•	TeacherDashboardController
+•	AttendanceController
+•	MaterialController
+•	GradeController
+•	ExamController
+•	AnnouncementController
+Siswa
+•	StudentDashboardController
+•	AttendanceController
+•	GradeController
+•	MaterialController
+•	AnnouncementController
+Orang tua
+•	ParentDashboardController
+•	StudentDetailController
+•	InvoiceController
+•	AttendanceController
+•	AnnouncementController
+________________________________________
+🟩 9. Desain UI (MerakiUI Style)
+Minta AI menghasilkan semua tampilan menggunakan komponen MerakiUI:
+•	https://merakiui.com/components
+•	Pastikan:
+o	Grid modern
+o	Card UI
+o	Clean white spacing
+o	Button modern rounded-xl
+o	Shadow-md halus
+o	Mobile navigation collapse
+o	Sidebar otomatis berubah ke drawer saat mobile
+________________________________________
+🟩 10. Output yang harus dihasilkan AI
+Minta AI menghasilkan seluruh hal berikut secara lengkap:
+1. Struktur folder Laravel lengkap
+2. Semua migrasi database
+3. Semua model + relasi antar tabel
+4. Semua controller + method lengkap
+5. Service & Repository pattern
+6. Route lengkap
+7. Seluruh Blade layout
+8. Semua komponen MerakiUI (header, sidebar, table, card)
+9. Seluruh halaman publik
+10. Seluruh halaman dashboard setiap role
+11. Contoh UI
+12. Contoh aksi CRUD lengkap
+13. Validasi form
+14. Seeder awal data sekolah
+15. Mekanisme upload file untuk galeri & materi
+16. Mekanisme download materi siswa
+17. Mekanisme input nilai guru
+18. Ringkasan kehadiran admin
+19. Invoice siswa & orang tua
+20. Kontakt form yang menyimpan ke tabel contact_messages
+________________________________________
+🟦 PROMPT PENUTUP
+Bangunkan seluruh Sistem Administrasi SMAN 1 DONGGO sesuai semua detail di atas. Berikan kode lengkap, struktur file, Blade, controller, routing, database, desain UI MerakiUI, dan pastikan website responsif untuk desktop dan mobile. Buatkan semuanya secara rapi, modular, dan lengkap.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

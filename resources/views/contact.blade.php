@@ -1,78 +1,102 @@
-<x-publik-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Kontak Kami') }}
-        </h2>
-    </x-slot>
+@extends('layouts.guest')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <h1 class="text-3xl font-bold mb-4">Hubungi Kami</h1>
-                    <p class="text-lg mb-6">Jika Anda memiliki pertanyaan atau membutuhkan informasi lebih lanjut, jangan ragu untuk menghubungi kami.</p>
+@section('content')
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <h2 class="text-2xl font-semibold mb-4">Informasi Kontak</h2>
-                            <div class="space-y-4">
-                                <div class="flex items-center">
-                                    <svg class="w-6 h-6 text-gray-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    </svg>
-                                    <div>
-                                        <p class="font-semibold">Alamat</p>
-                                        <p>Jl. Pendidikan No. 1, Donggo, Indonesia</p>
-                                    </div>
-                                </div>
+<!-- Kontak & Maps -->
+<section class="py-16 px-6 bg-white dark:bg-gray-800">
+    <div class="max-w-6xl mx-auto">
 
-                                <div class="flex items-center">
-                                    <svg class="w-6 h-6 text-gray-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                                    </svg>
-                                    <div>
-                                        <p class="font-semibold">Telepon</p>
-                                        <p>(021) 1234-5678</p>
-                                    </div>
-                                </div>
+        <h1 class="text-4xl font-bold mb-8 text-primary text-center">Kontak Kami</h1>
 
-                                <div class="flex items-center">
-                                    <svg class="w-6 h-6 text-gray-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                                    </svg>
-                                    <div>
-                                        <p class="font-semibold">Email</p>
-                                        <p>info@sman1donggo.sch.id</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <div class="max-w-4xl mx-auto space-y-10 text-gray-700 dark:text-gray-300">
 
-                        <div>
-                            <h2 class="text-2xl font-semibold mb-4">Kirim Pesan</h2>
-                            <form class="space-y-4">
-                                <div>
-                                    <label for="name" class="block text-sm font-medium text-gray-700">Nama</label>
-                                    <input type="text" id="name" name="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                </div>
-
-                                <div>
-                                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                                    <input type="email" id="email" name="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                </div>
-
-                                <div>
-                                    <label for="message" class="block text-sm font-medium text-gray-700">Pesan</label>
-                                    <textarea id="message" name="message" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
-                                </div>
-
-                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Kirim Pesan</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+            {{-- Success Message --}}
+            @if(session('success'))
+            <div class="bg-green-100 text-green-700 p-3 rounded-lg shadow">
+                {{ session('success') }}
             </div>
+            @endif
+
+            <!-- FORM -->
+            <form action="{{ route('contact.store') }}" method="POST" class="space-y-5">
+                @csrf
+
+                <!-- SUBJEK -->
+                <div>
+                    <label class="block mb-1 font-semibold">Subjek</label>
+                    <select name="subject"
+                        class="w-full rounded border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                        <option value="">Pilih Subjek</option>
+                        <option value="Pertanyaan" {{ old('subject')=='Pertanyaan' ? 'selected' : '' }}>Pertanyaan</option>
+                        <option value="Keluhan" {{ old('subject')=='Keluhan' ? 'selected' : '' }}>Keluhan</option>
+                        <option value="Saran" {{ old('subject')=='Saran' ? 'selected' : '' }}>Saran</option>
+                        <option value="Lainnya" {{ old('subject')=='Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                    </select>
+                    @error('subject')
+                    <p class="text-red-600 text-sm">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- NO HP -->
+                <div>
+                    <label class="block mb-1 font-semibold">No Hp</label>
+                    <input type="text" name="phone" value="{{ old('phone') }}"
+                        class="w-full rounded border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary" />
+                    @error('phone')
+                    <p class="text-red-600 text-sm">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- NAMA -->
+                <div>
+                    <label class="block mb-1 font-semibold">Nama</label>
+                    <input type="text" name="name" value="{{ old('name') }}"
+                        class="w-full rounded border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary" />
+                    @error('name')
+                    <p class="text-red-600 text-sm">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- EMAIL -->
+                <div>
+                    <label class="block mb-1 font-semibold">Email</label>
+                    <input type="email" name="email" value="{{ old('email') }}"
+                        class="w-full rounded border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                        placeholder="example@gmail.com" />
+                    @error('email')
+                    <p class="text-red-600 text-sm">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- PESAN -->
+                <div>
+                    <label class="block mb-1 font-semibold">Pesan</label>
+                    <textarea name="message" rows="4"
+                        class="w-full rounded border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary">{{ old('message') }}</textarea>
+                    @error('message')
+                    <p class="text-red-600 text-sm">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- BUTTON -->
+                <button type="submit"
+                    class="bg-primary text-white px-6 py-2 rounded-xl shadow-md hover:bg-primary-dark transition">
+                    Kirim Pesan
+                </button>
+
+            </form>
+
+            <!-- MAP -->
+            <div class="mt-10">
+                <h2 class="text-2xl font-semibold mb-4">Lokasi Sekolah</h2>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.7367467052016!2d118.76862091431872!3d-8.045634685971646!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2d8b88a1fb3894f7%3A0xfafe05f4608f7949!2sSMAN%201%20Donggo!5e0!3m2!1sen!2sid!4v1695212140840!5m2!1sen!2sid"
+                    width="100%" height="400" class="rounded-xl shadow-md" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+
         </div>
     </div>
-</x-publik-layout>
+</section>
+
+@endsection
