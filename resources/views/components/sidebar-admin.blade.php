@@ -1,5 +1,6 @@
 <aside x-data="{ open: true }" :class="open ? 'w-64' : 'w-16'"
-    class="flex flex-col h-screen bg-white dark:bg-gray-900 border-r dark:border-gray-700 transition-all duration-300">
+    class="flex flex-col h-screen bg-white dark:bg-gray-900 border-r dark:border-gray-700 transition-all duration-300 sticky top-0">
+    {{-- class="flex flex-col h-screen bg-white dark:bg-gray-900 border-r dark:border-gray-700 transition-all duration-300"> --}}
 
     <!-- LOGO & TOGGLE -->
     <div class="flex items-center justify-between px-6 py-6 border-b dark:border-gray-700">
@@ -17,8 +18,8 @@
         </button>
     </div>
 
-    <!-- NAVIGATION -->
-    <nav class="flex flex-col flex-1 py-6 space-y-2">
+    {{-- <nav class="flex flex-col flex-1 py-6 space-y-2"> --}}
+    <nav class="flex flex-col flex-1 py-6 space-y-2 overflow-y-auto">      
 
         <!-- Dashboard -->
         <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3 px-3 py-2 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-100 
@@ -129,6 +130,16 @@
             </svg>
             <span x-show="open" class="transition-opacity duration-300">Daftar Jadwal</span>
         </a>
+
+        <a href="{{ url('/admin/grades') }}" class="flex items-center space-x-3 px-3 py-2 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-100 
+              dark:hover:bg-gray-800 transition-colors duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    d="M9 19V6l12-3v13M9 19c-4.639 0-8.4-1.12-8.4-2.5S4.361 14 9 14s8.4 1.12 8.4 2.5V6M9 19c0 1.38 3.761 2.5 8.4 2.5s8.4-1.12 8.4-2.5" />
+            </svg>
+            <span x-show="open" class="transition-opacity duration-300">Daftar Nilai</span>
+        </a>  
 
         <!-- Attendances -->
         <a href="{{ url('/admin/attendances') }}" class="flex items-center space-x-3 px-3 py-2 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-100 

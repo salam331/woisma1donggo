@@ -1,4 +1,5 @@
-<nav x-data="{ isOpen: false }" class="relative bg-white shadow dark:bg-gray-800">
+<nav x-data="{ isOpen: false }" 
+class="relative bg-white shadow dark:bg-gray-800 sticky top-0 z-50">
     <div class="container px-6 py-4 mx-auto">
         <div class="lg:flex lg:items-center lg:justify-between">
             <div class="flex items-center justify-between">

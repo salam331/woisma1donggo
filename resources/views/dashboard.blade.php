@@ -7,8 +7,57 @@
   <div class="max-w-7xl mx-auto text-center">
     <h1 class="text-4xl md:text-6xl font-bold mb-6">Selamat Datang di Sistem Administrasi SMAN 1 Donggo</h1>
     <p class="mb-8 text-lg md:text-xl">Mengoptimalkan manajemen sekolah melalui sistem berbasis web modern dan responsif.</p>
-    <a href="#profil-sekolah" class="inline-block bg-white text-primary font-semibold rounded-xl px-8 py-3 hover:bg-gray-100 transition">Lihat Profil Sekolah</a>
+    <a href="{{ route('about') }}" class="inline-block bg-white text-primary font-semibold rounded-xl px-8 py-3 hover:bg-gray-100 transition">Lihat Profil Sekolah</a>
   </div>
+</section>
+
+{{-- tambahkan untuk menampilkan gambar yang bisa di slide --}}
+<section class="relative w-full overflow-hidden">
+    <div x-data="{
+        activeSlide: 0,
+        slides: [
+            '{{ asset('images/slide1.jpg') }}',
+            '{{ asset('images/slide2.jpg') }}',
+            '{{ asset('images/slide3.jpg') }}'
+        ],
+        next() {
+            this.activeSlide = (this.activeSlide + 1) % this.slides.length;
+        },
+        prev() {
+            this.activeSlide = (this.activeSlide - 1 + this.slides.length) % this.slides.length;
+        },
+        autoplay() {
+            setInterval(() => { this.next(); }, 5000);
+        }
+    }" x-init="autoplay()" class="relative">
+        <!-- Slides -->
+        <template x-for="(slide, index) in slides" :key="index">
+            <div x-show="activeSlide === index"
+                class="w-full h-96 bg-cover bg-center transition-opacity ease-in-out duration-700"
+                :style="`background-image: url('${slide}');`">
+                <div class="flex items-end justify-center w-full h-full bg-gray-900 bg-opacity-50">
+                    <h2 class="text-3xl font-bold text-white text-center px-4" x-text="`Caption for Slide ${index + 1}`"></h2>
+                </div>
+            </div>
+        </template>
+
+        <!-- Navigation Buttons -->
+        <button @click="prev()"
+            class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full ml-4 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+{{-- tambahkan icon < > yang bisa diklik untuk melihat slide gambar --}}
+        <button @click="next()"
+            class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full mr-4 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+    </div>
 </section>
 
 <!-- Visi dan Misi -->
