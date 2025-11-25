@@ -15,7 +15,7 @@
 
             {{-- Logo --}}
             <div class="flex justify-center mx-auto">
-                <x-application-logo class="w-auto h-10 text-primary" />
+                {{-- <x-application-logo class="w-auto h-10 text-primary" /> --}}
             </div>
 
             <p class="mt-3 text-xl text-center text-gray-600 dark:text-gray-200">

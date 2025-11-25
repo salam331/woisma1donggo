@@ -1,12 +1,17 @@
 <footer class="bg-white dark:bg-gray-800 shadow-inner p-8 mt-10">
     <div class="max-w-6xl mx-auto text-center">
 
-        <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-            SMAN 1 Donggo
-        </h2>
 
+        {{-- tambahkan logo samping h2--}}
+        <div class="flex items-center justify-center">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo SMAN 1 Donggo" class="w-8 h-8 mr-2">
+            <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                SMAN 1 Donggo
+            </h2>
+        </div>
         <p class="mt-2 text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
-            Menyediakan informasi resmi sekolah, berita terkini, pengumuman akademik, dan layanan administrasi untuk seluruh siswa dan masyarakat.
+            Menyediakan informasi resmi sekolah, berita terkini, pengumuman akademik, dan layanan administrasi untuk
+            seluruh siswa dan masyarakat.
         </p>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-8 text-sm">

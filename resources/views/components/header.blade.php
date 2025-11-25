@@ -2,9 +2,12 @@
     <div class="container px-6 py-8 mx-auto flex items-center justify-between">
 
         <!-- Logo / Title -->
-        <div class="text-xl font-bold text-primary dark:text-primary">
-            SMAN 1 Donggo
+        <div class="flex items-center">
+            {{-- logo --}}
+            <img src="{{ asset('images/logo.png') }}" alt="Logo SMAN 1 Donggo" class="w-10 h-10 mr-2">
+            <div class="text-xl font-bold text-primary dark:text-primary">SMAN 1 Donggo</div>
         </div>
+       
 
         <!-- Desktop Menu -->
         <nav class="hidden md:flex space-x-6">

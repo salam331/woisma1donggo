@@ -6,8 +6,9 @@
     <div class="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 lg:max-w-4xl">
         
         {{-- Gambar (MerakiUI) --}}
-        <div class="hidden bg-cover lg:block lg:w-1/2"
-            style="background-image: url('https://images.unsplash.com/photo-1606660265514-358ebbadc80d?auto=format&fit=crop&w=1575&q=80');">
+        <div class="hidden bg-cover lg:block lg:w-1/2">
+            {{-- style="background-image: url('https://images.unsplash.com/photo-1606660265514-358ebbadc80d?auto=format&fit=crop&w=1575&q=80');"> --}}
+            <img src="{{ asset('images/logo.png') }}" alt="Logo SMAN 1 Donggo" class="justify-center">
         </div>
 
         {{-- Form --}}
@@ -15,7 +16,7 @@
 
             {{-- Logo --}}
             <div class="flex justify-center mx-auto">
-                <x-application-logo class="w-auto h-10 text-primary" />
+                {{-- <x-application-logo class="w-auto h-10 text-primary" /> --}}
             </div>
 
             <p class="mt-3 text-xl text-center text-gray-600 dark:text-gray-200">
