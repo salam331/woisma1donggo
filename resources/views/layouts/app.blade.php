@@ -10,8 +10,19 @@
 </head>
 <body class="h-full">
     <div class="min-h-full flex">
-        @include('components.sidebar-admin')
-        <div class="flex-1 flex flex-col">
+            {{-- buatkan jika login sebagai role lain maka akan include sidebar sesuai role yang ada--}}
+            @if(Auth::check())
+                @if(Auth::user()->hasRole('admin'))
+                    @include('components.sidebar-admin')
+                @elseif(Auth::user()->hasRole('guru'))
+                    @include('components.sidebar-teacher')
+                @elseif(Auth::user()->hasRole('siswa'))
+                    @include('components.sidebar-student')
+                @elseif (Auth::user()->hasRole('orang_tua'))
+                    @include('components.sidebar-parent')
+                @endif
+            @endif
+            <div class="flex-1 flex flex-col">
             @include('components.navbar-admin')
             <main class="flex-1 p-6 overflow-y-auto">
                 @yield('content')
