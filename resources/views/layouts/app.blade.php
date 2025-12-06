@@ -7,6 +7,7 @@
     <link rel="icon" href="{{ asset('faviconn.ico') }}" type="image/x-icon">
     @vite('resources/css/app.css')
     <script src="//unpkg.com/alpinejs" defer></script>
+    <link rel="stylesheet" href="{{ asset('csss/mobile-table.css') }}">
 </head>
 <body class="h-full">
     <div class="min-h-full flex">
@@ -24,7 +25,7 @@
             @endif
             <div class="flex-1 flex flex-col">
             @include('components.navbar-admin')
-            <main class="flex-1 p-6 overflow-y-auto">
+            <main class="flex-1 overflow-y-auto">
                 @yield('content')
             </main>
         </div>

@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\SchoolProfileController;
 use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\ContactMessageController;
+use App\Http\Controllers\Admin\ExamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,6 +92,8 @@ Route::middleware(['auth', 'role:admin'])
 
     // Users
     Route::resource('users', UserController::class);
+    Route::post('users/{user}/deactivate', [UserController::class, 'deactivate'])->name('users.deactivate');
+    Route::post('users/{user}/reactivate', [UserController::class, 'reactivate'])->name('users.reactivate');
 
     // Teachers
     Route::resource('teachers', TeacherController::class);
@@ -119,6 +122,7 @@ Route::middleware(['auth', 'role:admin'])
     Route::get('attendances/summary', [AttendanceController::class, 'summary'])->name('attendances.summary');
     Route::get('attendances/class/{classId}', [AttendanceController::class, 'indexByClass'])->name('attendances.index-by-class');
     Route::get('attendances/class/{classId}/subject/{subjectId}', [AttendanceController::class, 'indexBySubject'])->name('attendances.index-by-subject');
+    Route::get('attendances/student/{studentId}/subject/{subjectId}', [AttendanceController::class, 'studentAttendanceHistory'])->name('attendances.student-history');
     Route::resource('attendances', AttendanceController::class);
 
     // Invoices
@@ -135,6 +139,26 @@ Route::middleware(['auth', 'role:admin'])
 
     // Contact Messages
     Route::resource('contact-messages', ContactMessageController::class);
+
+    // Grades (nilai)
+    Route::resource('grades', \App\Http\Controllers\Admin\GradeController::class);
+    Route::get('grades/get-subjects/{classId}', [\App\Http\Controllers\Admin\GradeController::class, 'getSubjectsByClass'])->name('grades.get-subjects');
+    Route::get('grades/get-exams/{classId}/{subjectId}', [\App\Http\Controllers\Admin\GradeController::class, 'getExamsByClassAndSubject'])->name('grades.get-exams');
+    Route::get('grades/get-students/{classId}', [\App\Http\Controllers\Admin\GradeController::class, 'getStudentsByClass'])->name('grades.get-students');
+
+    // Hierarchical grades routes
+    Route::get('grades/class/{classId}', [\App\Http\Controllers\Admin\GradeController::class, 'showClass'])->name('grades.class');
+    Route::get('grades/class/{classId}/subject/{subjectId}', [\App\Http\Controllers\Admin\GradeController::class, 'showSubject'])->name('grades.subject');
+    Route::get('grades/class/{classId}/subject/{subjectId}/exam/{examId}', [\App\Http\Controllers\Admin\GradeController::class, 'showExam'])->name('grades.exam');
+    Route::get('grades/class/{classId}/subject/{subjectId}/exam/{examId}/edit', [\App\Http\Controllers\Admin\GradeController::class, 'editExam'])->name('grades.edit-exam');
+    Route::put('grades/class/{classId}/subject/{subjectId}/exam/{examId}/update', [\App\Http\Controllers\Admin\GradeController::class, 'updateExam'])->name('grades.update-exam');
+    Route::get('grades/class/{classId}/subject/{subjectId}/exam/{examId}/student/{studentId}', [\App\Http\Controllers\Admin\GradeController::class, 'showStudent'])->name('grades.student');
+
+    // Exams (ujian)
+    Route::resource('exams', ExamController::class);
+    Route::get('exams/get-teachers/{classId}', [ExamController::class, 'getTeachersByClass'])->name('exams.get-teachers');
+    Route::get('exams/get-subjects/{teacherId}', [ExamController::class, 'getSubjectsByTeacher'])->name('exams.get-subjects');
+
 });
 
 

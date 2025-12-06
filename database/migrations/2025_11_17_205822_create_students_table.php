@@ -20,12 +20,12 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->date('birth_date')->nullable();
             $table->enum('gender', ['male', 'female']);
-            $table->unsignedBigInteger('class_id');
+            $table->unsignedBigInteger('school_class_id');
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('photo')->nullable();
             $table->timestamps();
 
-            $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade');
+            $table->foreign('school_class_id')->references('id')->on('classes')->onDelete('cascade');
             $table->foreign('parent_id')->references('id')->on('parents')->onDelete('cascade');
         });
     }

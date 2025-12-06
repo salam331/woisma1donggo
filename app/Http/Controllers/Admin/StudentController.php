@@ -105,7 +105,7 @@ class StudentController extends Controller
             'address' => 'nullable|string',
             'birth_date' => 'nullable|date',
             'gender' => 'required|in:male,female',
-            'class_id' => 'required|exists:classes,id',
+            'school_class_id' => 'required|exists:classes,id',
             'parent_id' => 'required|exists:parents,id',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);

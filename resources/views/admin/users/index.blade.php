@@ -225,91 +225,102 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Role</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Dibuat</th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                    
-                    @forelse($users as $user)
-                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <!-- Nama -->
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="h-10 w-10 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center">
-                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-200">
-                                        {{ substr($user->name, 0, 1) }}
-                                    </span>
-                                </div>
-                                <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
-                                        {{ $user->name }}
-                                    </div>
+
+                @forelse($users as $user)
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+
+                    <td data-label="Nama" class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="h-10 w-10 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-200">
+                                    {{ substr($user->name, 0, 1) }}
+                                </span>
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                    {{ $user->name }}
                                 </div>
                             </div>
-                        </td>
+                        </div>
+                    </td>
 
-                        <!-- Email -->
-                        <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-200">
-                            {{ $user->email }}
-                        </td>
+                    <td data-label="Email" class="px-6 py-4 text-sm text-gray-900 dark:text-gray-200">
+                        {{ $user->email }}
+                    </td>
 
-                        <!-- Role -->
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            @foreach($user->roles as $role)
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full
-                                text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-700 dark:text-blue-100">
-                                {{ $role->name }}
-                            </span>
-                            @endforeach
-                        </td>
+                    <td data-label="Role" class="px-6 py-4 whitespace-nowrap">
+                        @foreach($user->roles as $role)
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full
+                            text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-700 dark:text-blue-100">
+                            {{ $role->name }}
+                        </span>
+                        @endforeach
+                    </td>
 
-                        <!-- Status -->
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-100">
+                    <td data-label="Status" class="px-6 py-4 whitespace-nowrap">
+                        <dd class="mt-1 text-sm text-gray-900">
+                            @if($user->is_active)
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                 Aktif
                             </span>
-                        </td>
+                            @else
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                Tidak Aktif
+                            </span>
+                            @endif
+                        </dd>
+                    </td>
 
-                        <!-- Date -->
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                            {{ $user->created_at->format('d/m/Y') }}
-                        </td>
+                    <td data-label="Dibuat" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                        {{ $user->created_at->format('d/m/Y') }}
+                    </td>
 
-                        <!-- Actions -->
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <div class="flex justify-end space-x-2">
-                                <a href="{{ route('admin.users.show', $user) }}"
-                                   class="text-blue-600 dark:text-blue-400 hover:text-blue-900">
-                                    Lihat
-                                </a>
+                    <td data-label="Aksi" class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
 
-                                <a href="{{ route('admin.users.edit', $user) }}"
-                                   class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900">
-                                    Edit
-                                </a>
+                        <!-- DESKTOP -->
+                        <div class="hidden sm:flex justify-center space-x-2">
+                            <a href="{{ route('admin.users.show', $user) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-900">Lihat</a>
+                            <a href="{{ route('admin.users.edit', $user) }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900">Edit</a>
 
-                                <form method="POST" action="{{ route('admin.users.destroy', $user) }}" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="text-red-600 dark:text-red-400 hover:text-red-900"
-                                        onclick="return confirm('Apakah Anda yakin ingin menghapus pengguna ini?')">
-                                        Hapus
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="6" class="px-6 py-4 text-center text-gray-500 dark:text-gray-300">
-                            Tidak ada pengguna ditemukan.
-                        </td>
-                    </tr>
-                    @endforelse
+                            <form method="POST" action="{{ route('admin.users.destroy', $user) }}" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button class="text-red-600 dark:text-red-400 hover:text-red-900">
+                                    Hapus
+                                </button>
+                            </form>
+                        </div>
 
-                </tbody>
+                        <!-- MOBILE -->
+                        <div class="mobile-actions sm:hidden">
+                            <a href="{{ route('admin.users.show', $user) }}" class="px-3 py-1 text-xs rounded bg-blue-500 text-white">View</a>
+                            <a href="{{ route('admin.users.edit', $user) }}" class="px-3 py-1 text-xs rounded bg-indigo-500 text-white">Edit</a>
+
+                            <form method="POST" action="{{ route('admin.users.destroy', $user) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button class="px-3 py-1 text-xs rounded bg-red-500 text-white">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+
+                    </td>
+                </tr>
+
+                @empty
+                <tr>
+                    <td colspan="6" class="px-6 py-4 text-center text-gray-500 dark:text-gray-300">
+                        Tidak ada pengguna ditemukan.
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+
             </table>
         </div>
 

@@ -9,7 +9,7 @@
     <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
         Detail Kehadiran Siswa
     </h2>
-    <a href="{{ route('admin.attendances.index') }}"
+    <a href="{{ route('admin.attendances.student-history', ['studentId' => $attendance->student->id, 'subjectId' => $subject->id]) }}"
        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
         Kembali
     </a>

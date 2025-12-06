@@ -1,10 +1,8 @@
 @extends('layouts.app')
 
-@section('header')
-    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        {{ __('Dashboard Guru') }}
-    </h2>
-@endsection
+@section('title', 'Dashboard Guru')
+
+@section('content')
 
 @section('content')
     <div class="py-12">

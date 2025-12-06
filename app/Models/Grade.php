@@ -9,10 +9,10 @@ class Grade extends Model
 {
     protected $fillable = [
         'student_id',
+        'subject_id',
         'exam_id',
         'score',
-        'grade',
-        'teacher_id',
+        'grade_letter',
         'notes',
     ];
 
@@ -25,13 +25,13 @@ class Grade extends Model
         return $this->belongsTo(Student::class);
     }
 
+    public function subject(): BelongsTo
+    {
+        return $this->belongsTo(Subject::class);
+    }
+
     public function exam(): BelongsTo
     {
         return $this->belongsTo(Exam::class);
-    }
-
-    public function teacher(): BelongsTo
-    {
-        return $this->belongsTo(Teacher::class);
     }
 }

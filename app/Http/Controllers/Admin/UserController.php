@@ -97,6 +97,24 @@ class UserController extends Controller
     }
 
     /**
+     * Deactivate the specified user.
+     */
+    public function deactivate(User $user)
+    {
+        $user->update(['is_active' => false]);
+        return redirect()->route('admin.users.show', $user)->with('success', 'User deactivated successfully.');
+    }
+
+    /**
+     * Reactivate the specified user.
+     */
+    public function reactivate(User $user)
+    {
+        $user->update(['is_active' => true]);
+        return redirect()->route('admin.users.show', $user)->with('success', 'User reactivated successfully.');
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(User $user)

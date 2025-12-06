@@ -1,6 +1,17 @@
-<aside x-data="{ open: true }" :class="open ? 'w-64' : 'w-16'"
-    class="flex flex-col h-screen bg-white dark:bg-gray-900 border-r dark:border-gray-700 transition-all duration-300 sticky top-0">
-    {{-- class="flex flex-col h-screen bg-white dark:bg-gray-900 border-r dark:border-gray-700 transition-all duration-300"> --}}
+<aside 
+    x-data="{
+        open: window.innerWidth >= 768,
+        init() {
+            window.addEventListener('resize', () => {
+                this.open = window.innerWidth >= 768;
+            });
+        },
+        toggle() { this.open = !this.open }
+    }"
+    :class="open ? 'w-64' : 'w-16'"
+    class="flex flex-col h-screen bg-white dark:bg-gray-900 border-r dark:border-gray-700 transition-all duration-300 sticky top-0"
+>
+
 
     <!-- LOGO & TOGGLE -->
     <div class="flex items-center justify-between px-6 py-6 border-b dark:border-gray-700">
@@ -10,7 +21,9 @@
         <span x-show="open"
                 class="text-lg font-bold text-gray-700 dark:text-gray-200 transition-opacity duration-300">Admin</span>
         <!-- Toggle Button -->
-        <button @click="open = !open" class="text-gray-700 dark:text-gray-200 focus:outline-none">
+        {{-- <button @click="open = !open" class="text-gray-700 dark:text-gray-200 focus:outline-none"> --}}
+        <button @click="toggle()" class="text-gray-700 dark:text-gray-200 focus:outline-none">
+
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-8" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -20,7 +33,6 @@
 
     {{-- <nav class="flex flex-col flex-1 py-6 space-y-2"> --}}
     <nav class="flex flex-col flex-1 py-6 space-y-2 overflow-y-auto">      
-
         <!-- Dashboard -->
         <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3 px-3 py-2 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-100 
               dark:hover:bg-gray-800 transition-colors duration-200">
@@ -120,6 +132,17 @@
             <span x-show="open" class="transition-opacity duration-300">Daftar Materi</span>
         </a>
 
+        {{-- Exam --}}
+        <a href="{{ url('/admin/exams') }}" class="flex items-center space-x-3 px-3 py-2 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-100 
+              dark:hover:bg-gray-800 transition-colors duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            <span x-show="open" class="transition-opacity duration-300">Daftar Ujian</span>
+        </a>      
+
         <!-- Schedules -->
         <a href="{{ url('/admin/schedules') }}" class="flex items-center space-x-3 px-3 py-2 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-100 
               dark:hover:bg-gray-800 transition-colors duration-200">
@@ -131,6 +154,7 @@
             <span x-show="open" class="transition-opacity duration-300">Daftar Jadwal</span>
         </a>
 
+        {{-- Grades --}}
         <a href="{{ url('/admin/grades') }}" class="flex items-center space-x-3 px-3 py-2 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-100 
               dark:hover:bg-gray-800 transition-colors duration-200">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"

@@ -32,7 +32,7 @@ class SchoolClass extends Model
 
     public function students(): HasMany
     {
-        return $this->hasMany(Student::class, 'class_id');
+        return $this->hasMany(Student::class, 'school_class_id');
     }
 
     public function schedules(): HasMany

@@ -9,20 +9,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Exam extends Model
 {
     protected $fillable = [
-        'title',
+        'name',
         'description',
         'subject_id',
         'school_class_id',
         'teacher_id',
         'exam_date',
-        'exam_type',
+        'start_time',
+        'end_time',
         'total_score',
-        'academic_year',
+        'publish',
     ];
 
     protected $casts = [
         'exam_date' => 'date',
         'total_score' => 'decimal:2',
+        'publish' => 'boolean',
         'academic_year' => 'integer',
     ];
 

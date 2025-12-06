@@ -1,0 +1,60 @@
+    /* Mobile: ubah tabel jadi card */
+    @media (max-width: 640px) {
+        table.table-responsive, 
+        thead, 
+        tbody, 
+        th, 
+        td, 
+        tr {
+            display: block;
+        }
+
+        thead {
+            display: none; /* header dihilangkan */
+        }
+
+        tbody tr {
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 12px;
+            background: white;
+        }
+
+        tbody td {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 10px;
+            border: none !important;
+        }
+
+        tbody td::before {
+            content: attr(data-label);
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #555;
+        }
+
+        .mobile-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .mobile-two-cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        }
+
+        .mobile-two-cols .col-span-full {
+            grid-column: span 2;
+        }
+
+        /* Form-group rapi */
+        .mobile-two-cols .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+    }

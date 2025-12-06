@@ -1,33 +1,67 @@
-<nav x-data="{ isOpen: false }" 
-class="relative bg-white shadow dark:bg-gray-800 sticky top-0 z-50">
+<nav x-data="{ isOpen: false }" class="relative bg-white shadow dark:bg-gray-800 sticky top-0 z-50">
     <div class="container px-6 py-4 mx-auto">
         <div class="lg:flex lg:items-center lg:justify-between">
-            <div class="flex items-center justify-between">
-                <h2 class="text-2xl font-semibold mb-4 text-primary justify-between">Selamat Datang, {{ Auth::user()->name }}!</h2>
+
+            <!-- Welcome & Mobile Menu Button -->
+            <div class="flex items-center justify-between w-full lg:w-auto">
+                <h2 class="text-2xl font-semibold mb-4 text-primary">
+                    Selamat Datang, {{ Auth::user()->name }}!
+                </h2>
+
                 <!-- Mobile menu button -->
-                <div class="flex lg:hidden">
+                <div class="flex lg:hidden relative">
                     <button x-cloak @click="isOpen = !isOpen" type="button"
-                        class="text-gray-500 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:text-gray-600 dark:focus:text-gray-400"
+                        class="text-gray-500 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:text-gray-600 dark:focus:text-gray-400 p-2 rounded transition-colors"
                         aria-label="toggle menu">
+                        <!-- Hamburger Icon -->
                         <svg x-show="!isOpen" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
                         </svg>
 
+                        <!-- Close Icon -->
                         <svg x-show="isOpen" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
+
+                    <!-- Mobile Dropdown Menu -->
+                    <div x-show="isOpen" @click.outside="isOpen = false" x-transition
+                        class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 z-50">
+                        
+                        <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+
+                        <p class="px-4 py-2 text-gray-700 dark:text-gray-200 font-semibold border-b">
+                            {{ Auth::user()->name }}
+                        </p>
+
+                        <a href="{{ route('profile.edit') }}"
+                            class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                            Profil
+                        </a>
+
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button
+                                class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
-            <div x-cloak :class="[isOpen ? 'translate-x-0 opacity-100 ' : 'opacity-0 -translate-x-full']"
-                class="absolute inset-x-0 z-20 w-full px-6 py-4 transition-all duration-300 ease-in-out bg-white dark:bg-gray-800 lg:mt-0 lg:p-0 lg:top-0 lg:relative lg:bg-transparent lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center">
-
+            <!-- Desktop Menu & Profile Dropdown -->
+            <div x-cloak :class="[isOpen ? 'translate-x-0 opacity-100' : 'opacity-0 -translate-x-full']"
+                class="absolute inset-x-0 z-20 w-full px-6 py-4 transition-all duration-300 ease-in-out bg-white dark:bg-gray-800 
+                       lg:mt-0 lg:p-0 lg:top-0 lg:relative lg:bg-transparent lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center">
+                
                 <div class="flex items-center mt-4 lg:mt-0">
+
+                    <!-- Notifications Button -->
                     <button
-                        class="hidden mx-4 text-gray-600 transition-colors duration-300 transform lg:block dark:text-gray-200 hover:text-gray-700 dark:hover:text-gray-400 focus:text-gray-700 dark:focus:text-gray-400 focus:outline-none"
+                        class="hidden lg:block mx-4 text-gray-600 dark:text-gray-200 hover:text-gray-700 dark:hover:text-gray-400 focus:outline-none transition-colors duration-300"
                         aria-label="show notifications">
                         <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -36,28 +70,26 @@ class="relative bg-white shadow dark:bg-gray-800 sticky top-0 z-50">
                         </svg>
                     </button>
 
-                    <!-- PROFILE DROPDOWN -->
+                    <!-- Profile Dropdown -->
                     <div x-data="{ openProfile: false }" class="relative">
-
                         <button @click="openProfile = !openProfile" class="flex items-center focus:outline-none">
-
                             <div class="w-9 h-9 overflow-hidden border-2 border-gray-400 rounded-full">
-                                <img src="https://i.pravatar.cc/100?u={{ Auth::id() }}"
-                                    class="object-cover w-full h-full">
+                                <img src="https://i.pravatar.cc/100?u={{ Auth::id() }}" class="object-cover w-full h-full">
                             </div>
-
-                            {{-- <span class="ml-2 text-gray-700 dark:text-gray-200 hidden sm:block">
-                                {{ Auth::user()->name }}
-                            </span> --}}
                         </button>
 
-                        <!-- DROPDOWN -->
+                        <!-- Dropdown -->
                         <div x-show="openProfile" @click.outside="openProfile = false" x-transition
                             class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 z-50">
-
+                            
                             <p class="px-4 py-2 text-gray-700 dark:text-gray-200 font-semibold border-b">
                                 {{ Auth::user()->name }}
                             </p>
+
+                            <a href="{{ route('profile.edit') }}"
+                                class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                Profile
+                            </a>
 
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -68,8 +100,10 @@ class="relative bg-white shadow dark:bg-gray-800 sticky top-0 z-50">
                             </form>
                         </div>
                     </div>
+
                 </div>
             </div>
+
         </div>
     </div>
 </nav>

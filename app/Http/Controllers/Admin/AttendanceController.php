@@ -89,7 +89,8 @@ class AttendanceController extends Controller
     public function show(Attendance $attendance)
     {
         $attendance->load(['student', 'schedule.subject', 'schedule.class']);
-        return view('admin.attendances.show', compact('attendance'));
+        $subject = $attendance->schedule->subject;
+        return view('admin.attendances.show', compact('attendance', 'subject'));
     }
 
     /**
@@ -209,15 +210,37 @@ class AttendanceController extends Controller
      */
     public function indexBySubject($classId, $subjectId)
     {
-        $class = \App\Models\SchoolClass::findOrFail($classId);
+        $class = \App\Models\SchoolClass::with('students')->findOrFail($classId);
         $subject = \App\Models\Subject::findOrFail($subjectId);
 
+        $students = $class->students()->paginate(10);
+
         $attendances = Attendance::with(['student', 'schedule'])
-            ->whereHas('schedule', function ($q) use ($classId, $subjectId) {
-                $q->where('class_id', $classId)->where('subject_id', $subjectId);
+            ->whereHas('schedule', function ($query) use ($classId, $subjectId) {
+                $query->where('class_id', $classId)
+                      ->where('subject_id', $subjectId);
             })
             ->paginate(10);
 
-        return view('admin.attendances.index-by-subject', compact('class', 'subject', 'attendances'));
+        return view('admin.attendances.index-by-subject', compact('class', 'subject', 'students', 'attendances'));
+    }
+
+    /**
+     * Show attendance history per student and subject.
+     */
+    public function studentAttendanceHistory($studentId, $subjectId)
+    {
+        $student = \App\Models\Student::findOrFail($studentId);
+        $subject = \App\Models\Subject::findOrFail($subjectId);
+
+        $attendances = Attendance::with('schedule')
+            ->where('student_id', $studentId)
+            ->whereHas('schedule', function ($query) use ($subjectId) {
+                $query->where('subject_id', $subjectId);
+            })
+            ->orderBy('date', 'desc')
+            ->paginate(10);
+
+        return view('admin.attendances.student-history', compact('student', 'subject', 'attendances'));
     }
 }

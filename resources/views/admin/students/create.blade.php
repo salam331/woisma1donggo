@@ -105,17 +105,17 @@
 
                             {{-- Class --}}
                             <div>
-                                <label for="class_id" class="block text-sm font-medium">Kelas</label>
-                                <select id="class_id" name="class_id" required
+                                <label for="school_class_id" class="block text-sm font-medium">Kelas</label>
+                                <select id="school_class_id" name="school_class_id" required
                                     class="mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                                     <option value="">Pilih Kelas</option>
                                     @foreach($classes as $class)
-                                        <option value="{{ $class->id }}" {{ old('class_id') == $class->id ? 'selected' : '' }}>
+                                        <option value="{{ $class->id }}" {{ old('school_class_id') == $class->id ? 'selected' : '' }}>
                                             {{ $class->name }}
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('class_id')
+                                @error('school_class_id')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>

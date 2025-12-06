@@ -17,7 +17,7 @@ class Student extends Model
         'address',
         'birth_date',
         'gender',
-        'class_id',
+        'school_class_id',
         'parent_id',
         'photo',
         'academic_year',
@@ -35,7 +35,7 @@ class Student extends Model
 
     public function class(): BelongsTo
     {
-        return $this->belongsTo(SchoolClass::class, 'class_id');
+        return $this->belongsTo(SchoolClass::class, 'school_class_id');
     }
 
     public function attendances(): HasMany

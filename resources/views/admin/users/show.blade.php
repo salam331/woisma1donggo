@@ -5,6 +5,11 @@
 @section('content')
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        @if(session('success'))
+            <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                <span class="block sm:inline">{{ session('success') }}</span>
+            </div>
+        @endif
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -43,9 +48,15 @@
                                     <div>
                                         <dt class="text-sm font-medium text-gray-500">Status</dt>
                                         <dd class="mt-1 text-sm text-gray-900">
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                Aktif
-                                            </span>
+                                            @if($user->is_active)
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    Aktif
+                                                </span>
+                                            @else
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                    Tidak Aktif
+                                                </span>
+                                            @endif
                                         </dd>
                                     </div>
                                     <div>
@@ -85,12 +96,24 @@
                                 <a href="{{ route('admin.users.edit', $user) }}" class="block w-full text-left px-4 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
                                     Edit Informasi Pengguna
                                 </a>
-                                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                                {{-- <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
                                     Reset Password
-                                </button>
-                                <button class="block w-full text-left px-4 py-2 text-sm text-red-700 bg-white border border-red-300 rounded-md hover:bg-red-50">
-                                    Nonaktifkan Akun
-                                </button>
+                                </button> --}}
+                                @if($user->is_active)
+                                    <form method="POST" action="{{ route('admin.users.deactivate', $user) }}" class="inline">
+                                        @csrf
+                                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-700 bg-white border border-red-300 rounded-md hover:bg-red-50" onclick="return confirm('Apakah Anda yakin ingin menonaktifkan akun ini?')">
+                                            Nonaktifkan Akun
+                                        </button>
+                                    </form>
+                                @else
+                                    <form method="POST" action="{{ route('admin.users.reactivate', $user) }}" class="inline">
+                                        @csrf
+                                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-green-700 bg-white border border-green-300 rounded-md hover:bg-green-50" onclick="return confirm('Apakah Anda yakin ingin mengaktifkan kembali akun ini?')">
+                                            Aktifkan Kembali
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     </div>

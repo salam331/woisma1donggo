@@ -4,7 +4,7 @@
 
 @section('content')
     {{-- <div class="py-12"> --}}
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div>
             <div x-data="{
             posX: window.innerWidth - 70,
             posY: window.innerHeight / 2,
@@ -204,68 +204,81 @@
 
                     <!-- Teachers Table -->
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 table-responsive">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Foto</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        NIP</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Nama</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Email</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Gender</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Spesialisasi</th>
-                                    <th
-                                        class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Aksi</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Foto</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">NIP</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Gender</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Spesialisasi</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Aksi</th>
                                 </tr>
                             </thead>
+
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse($teachers as $teacher)
                                     <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        
+                                        {{-- FOTO --}}
+                                        <td class="px-6 py-4 whitespace-nowrap" data-label="Foto">
                                             <div class="flex-shrink-0 h-10 w-10">
                                                 @if($teacher->photo)
                                                     <img class="h-10 w-10 rounded-full object-cover"
                                                         src="{{ asset('storage/' . $teacher->photo) }}" alt="{{ $teacher->name }}">
                                                 @else
-                                                    <div
-                                                        class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
-                                                        <span
-                                                            class="text-sm font-medium text-gray-700">{{ substr($teacher->name, 0, 1) }}</span>
+                                                    <div class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
+                                                        <span class="text-sm font-medium text-gray-700">
+                                                            {{ substr($teacher->name, 0, 1) }}
+                                                        </span>
                                                     </div>
                                                 @endif
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {{ $teacher->nip }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $teacher->name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $teacher->email }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+
+                                        {{-- NIP --}}
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                                            data-label="NIP">
+                                            {{ $teacher->nip }}
+                                        </td>
+
+                                        {{-- NAMA --}}
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                            data-label="Nama">
+                                            {{ $teacher->name }}
+                                        </td>
+
+                                        {{-- EMAIL --}}
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                            data-label="Email">
+                                            {{ $teacher->email }}
+                                        </td>
+
+                                        {{-- GENDER --}}
+                                        <td class="px-6 py-4 whitespace-nowrap" data-label="Gender">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                                                 {{ $teacher->gender === 'male' ? 'bg-blue-100 text-blue-800' : 'bg-pink-100 text-pink-800' }}">
                                                 {{ $teacher->gender === 'male' ? 'Laki-laki' : 'Perempuan' }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $teacher->subject_specialization ?? '-' }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <div class="flex justify-end space-x-2">
+
+                                        {{-- SPESIALISASI --}}
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                            data-label="Spesialisasi">
+                                            {{ $teacher->subject_specialization ?? '-' }}
+                                        </td>
+
+                                        {{-- AKSI --}}
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                                            data-label="Aksi">
+
+                                            {{-- DESKTOP --}}
+                                            <div class="hidden sm:flex justify-center space-x-2">
                                                 <a href="{{ route('admin.teachers.show', $teacher) }}"
-                                                    class="text-blue-600 hover:text-blue-900">Lihat</a>
+                                                class="text-blue-600 hover:text-blue-900">Lihat</a>
                                                 <a href="{{ route('admin.teachers.edit', $teacher) }}"
-                                                    class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                                class="text-indigo-600 hover:text-indigo-900">Edit</a>
                                                 <form method="POST" action="{{ route('admin.teachers.destroy', $teacher) }}"
                                                     class="inline">
                                                     @csrf
@@ -274,6 +287,20 @@
                                                         onclick="return confirm('Apakah Anda yakin ingin menghapus guru ini?')">Hapus</button>
                                                 </form>
                                             </div>
+
+                                            {{-- MOBILE --}}
+                                            <div class="mobile-actions sm:hidden">
+                                                <a href="{{ route('admin.teachers.show', $teacher) }}"
+                                                class="text-blue-600 font-semibold">Lihat</a>
+                                                <a href="{{ route('admin.teachers.edit', $teacher) }}"
+                                                class="text-indigo-600 font-semibold">Edit</a>
+                                                <form method="POST" action="{{ route('admin.teachers.destroy', $teacher) }}">
+                                                    @csrf @method('DELETE')
+                                                    <button class="text-red-600 font-semibold"
+                                                            onclick="return confirm('Hapus data?')">Hapus</button>
+                                                </form>
+                                            </div>
+
                                         </td>
                                     </tr>
                                 @empty
