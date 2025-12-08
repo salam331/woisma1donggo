@@ -1,14 +1,8 @@
-<x-admin-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Edit Profil Sekolah
-            </h2>
-            <a href="{{ route('admin.school-profiles.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                Kembali
-            </a>
-        </div>
-    </x-slot>
+@extends('layouts.app')
+
+@section('title', 'Edit Profil Sekolah')
+
+@section('content')
 
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
@@ -85,22 +79,6 @@
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
-
-                                <!-- Logo -->
-                                <div>
-                                    <label for="logo" class="block text-sm font-medium text-gray-700">Logo Sekolah</label>
-                                    @if($schoolProfile->logo)
-                                        <div class="mt-2 mb-2">
-                                            <img src="{{ asset('storage/' . $schoolProfile->logo) }}" alt="Logo Sekolah" class="w-32 h-32 object-cover rounded-lg">
-                                        </div>
-                                    @endif
-                                    <input id="logo" type="file" name="logo" accept="image/*"
-                                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                    <p class="mt-1 text-sm text-gray-500">Format: JPEG, PNG, JPG, GIF. Maksimal 2MB.</p>
-                                    @error('logo')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
                             </div>
 
                             <!-- Right Column -->
@@ -144,6 +122,22 @@
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
+
+                                <!-- Logo -->
+                                <div>
+                                    <label for="logo" class="block text-sm font-medium text-gray-700">Logo Sekolah</label>
+                                    @if($schoolProfile->logo)
+                                        <div class="mt-2 mb-2">
+                                            <img src="{{ asset('storage/' . $schoolProfile->logo) }}" alt="Logo Sekolah" class="w-32 h-32 object-cover rounded-lg">
+                                        </div>
+                                    @endif
+                                    <input id="logo" type="file" name="logo" accept="image/*"
+                                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                    <p class="mt-1 text-sm text-gray-500">Format: JPEG, PNG, JPG, GIF. Maksimal 2MB.</p>
+                                    @error('logo')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
 
@@ -158,4 +152,4 @@
             </div>
         </div>
     </div>
-</x-admin-layout>
+@endsection

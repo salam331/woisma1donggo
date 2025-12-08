@@ -8,6 +8,16 @@
     @vite('resources/css/app.css')
     <script src="//unpkg.com/alpinejs" defer></script>
     <link rel="stylesheet" href="{{ asset('csss/mobile-table.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/trix@1.3.1/dist/trix.css">
+<script src="https://unpkg.com/trix@1.3.1/dist/trix.js" defer></script>
+
+<style>
+    trix-editor {
+        min-height: 200px;
+        background: white;
+        color: #111;
+    }
+</style>
 </head>
 <body class="h-full">
     <div class="min-h-full flex">

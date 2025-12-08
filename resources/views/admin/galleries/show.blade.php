@@ -1,14 +1,8 @@
-<x-admin-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Detail Galeri: {{ $gallery->title }}
-            </h2>
-            <a href="{{ route('admin.galleries.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                Kembali
-            </a>
-        </div>
-    </x-slot>
+@extends('layouts.app')
+
+@section('title', 'Manajemen Materi Pelajaran')
+
+@section('content')
 
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
@@ -94,4 +88,4 @@
             </div>
         </div>
     </div>
-</x-admin-layout>
+@endsection

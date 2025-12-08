@@ -23,11 +23,11 @@
     <div class="max-w-6xl mx-auto">
 
       <!-- GRID CARDS -->
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-10">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
 
-        <!-- Card 1 -->
-        <div class="group p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
-                          hover:shadow-xl hover:-translate-y-1 transform transition-all duration-300">
+        <!-- Card 1: Jadwal Pelajaran -->
+        {{-- <div onclick="openModal('modalJadwal')"
+          class="group p-6 cursor-pointer rounded-2xl shadow-lg bg-white dark:bg-gray-800 border hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
           <div class="w-14 h-14 flex items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900 mx-auto">
             <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" stroke-width="2"
               viewBox="0 0 24 24">
@@ -36,11 +36,11 @@
           </div>
           <h3 class="text-xl font-semibold mt-6 text-center text-gray-800 dark:text-gray-100">Jadwal Pelajaran</h3>
           <p class="mt-2 text-center text-gray-600 dark:text-gray-400">Lihat jadwal pelajaran terbaru setiap semester.</p>
-        </div>
+        </div> --}}
 
-        <!-- Card 2 -->
-        <div class="group p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
-                          hover:shadow-xl hover:-translate-y-1 transform transition-all duration-300">
+        <!-- Card 2: Kalender Akademik -->
+        <div onclick="openModal('modalKalender')"
+          class="group p-6 cursor-pointer rounded-2xl shadow-lg bg-white dark:bg-gray-800 border hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
           <div class="w-14 h-14 flex items-center justify-center rounded-xl bg-green-100 dark:bg-green-900 mx-auto">
             <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" stroke-width="2"
               viewBox="0 0 24 24">
@@ -52,9 +52,9 @@
             kegiatan sekolah.</p>
         </div>
 
-        <!-- Card 3 -->
-        <div class="group p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
-                          hover:shadow-xl hover:-translate-y-1 transform transition-all duration-300">
+        <!-- Card 3: Pengumuman -->
+        <div onclick="openModal('modalPengumuman')"
+          class="group p-6 cursor-pointer rounded-2xl shadow-lg bg-white dark:bg-gray-800 border hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
           <div class="w-14 h-14 flex items-center justify-center rounded-xl bg-yellow-100 dark:bg-yellow-900 mx-auto">
             <svg class="w-8 h-8 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" stroke-width="2"
               viewBox="0 0 24 24">
@@ -66,9 +66,9 @@
             sekolah.</p>
         </div>
 
-        <!-- Card 4 -->
-        <div class="group p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
-                          hover:shadow-xl hover:-translate-y-1 transform transition-all duration-300">
+        <!-- Card 4: Informasi Ujian -->
+        <div onclick="openModal('modalUjian')"
+          class="group p-6 cursor-pointer rounded-2xl shadow-lg bg-white dark:bg-gray-800 border hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
           <div class="w-14 h-14 flex items-center justify-center rounded-xl bg-red-100 dark:bg-red-900 mx-auto">
             <svg class="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" stroke-width="2"
               viewBox="0 0 24 24">
@@ -82,7 +82,6 @@
 
       </div>
 
-      <!-- BOTTOM NOTE -->
       <div class="max-w-4xl mx-auto text-center mt-16 text-gray-700 dark:text-gray-300">
         <p class="text-lg">
           Halaman ini akan terus diperbarui dengan informasi akademik terbaru untuk siswa dan orang tua.
@@ -91,5 +90,68 @@
 
     </div>
   </section>
+
+
+  <!-- ===================================================== -->
+  <!-- ====================== MODALS ======================== -->
+  <!-- ===================================================== -->
+
+  <!-- Modal Jadwal -->
+  {{-- <div id="modalJadwal" class="modal fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl w-11/12 md:w-1/2 relative">
+      <button onclick="closeModal('modalJadwal')" class="absolute top-3 right-3 text-xl">✖</button>
+      <h2 class="text-2xl font-bold mb-4">Jadwal Pelajaran</h2>
+      <p>Berikut adalah jadwal pelajaran terbaru setiap hari.</p>
+    </div>
+  </div> --}}
+
+  <!-- Modal Kalender -->
+  <div id="modalKalender" class="modal fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl w-11/12 md:w-1/2 relative">
+      <button onclick="closeModal('modalKalender')" class="absolute top-3 right-3 text-xl">✖</button>
+      <h2 class="text-2xl font-bold mb-4">Kalender Akademik 2024/2025</h2>
+      <p>Berikut kalender akademik lengkap tahun ajaran 2024/2025.</p>
+    </div>
+  </div>
+
+  <!-- Modal Pengumuman -->
+  <div id="modalPengumuman" class="modal fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl w-11/12 md:w-1/2 relative">
+      <button onclick="closeModal('modalPengumuman')" class="absolute top-3 right-3 text-xl">✖</button>
+      <h2 class="text-2xl font-bold mb-4">Pengumuman Akademik</h2>
+      <p>Berikut pengumuman terbaru terkait kebijakan sekolah.</p>
+    </div>
+  </div>
+
+  <!-- Modal Ujian -->
+  <div id="modalUjian" class="modal fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl w-11/12 md:w-1/2 relative">
+      <button onclick="closeModal('modalUjian')" class="absolute top-3 right-3 text-xl">✖</button>
+      <h2 class="text-2xl font-bold mb-4">Informasi Ujian</h2>
+      <p>Berikut informasi lengkap seputar ujian sekolah dan ujian nasional.</p>
+    </div>
+  </div>
+
+
+  <!-- SCRIPT -->
+  <script>
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+      document.getElementById(id).classList.add('flex');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+      document.getElementById(id).classList.remove('flex');
+    }
+
+    // Tutup modal jika klik area gelap
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('modal')) {
+        e.target.classList.add('hidden');
+        e.target.classList.remove('flex');
+      }
+    });
+  </script>
 
 @endsection
