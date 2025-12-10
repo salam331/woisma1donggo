@@ -4,74 +4,93 @@
 
 @section('content')
 
-    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-        <div class="p-6">
+    <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg overflow-hidden">
+        <div class="p-4 sm:p-6">
 
-            <!-- Alpine sudah ada di layout (navbar + sidebar), jadi tidak perlu include lagi -->
-
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-6">
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200">
                     Ringkasan Kehadiran Siswa
                 </h2>
+
                 <a href="{{ route('admin.attendances.index') }}"
-                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                    class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded w-full sm:w-auto text-center">
                     Kembali
                 </a>
             </div>
 
             <!-- Filter -->
-            <div class="mb-6 flex flex-col sm:flex-row justify-between items-center">
-                <div class="mb-4 sm:mb-0">
-                    <form method="GET" action="{{ route('admin.attendances.summary') }}" class="flex space-x-2">
-                        <select name="month" class="border border-gray-300 rounded-lg px-4 py-2">
-                            <option value="">Semua Bulan</option>
-                            @for($i = 1; $i <= 12; $i++)
-                                <option value="{{ $i }}" {{ request('month') == $i ? 'selected' : '' }}>
-                                    {{ date('F', mktime(0, 0, 0, $i, 1)) }}
-                                </option>
-                            @endfor
-                        </select>
+            <div class="mb-6">
+                <form method="GET" action="{{ route('admin.attendances.summary') }}"
+                    class="flex flex-col sm:flex-row gap-3">
 
-                        <select name="year" class="border border-gray-300 rounded-lg px-4 py-2">
-                            <option value="">Semua Tahun</option>
-                            @for($i = date('Y'); $i >= date('Y') - 5; $i--)
-                                <option value="{{ $i }}" {{ request('year') == $i ? 'selected' : '' }}>
-                                    {{ $i }}
-                                </option>
-                            @endfor
-                        </select>
+                    <select name="month"
+                        class="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg px-4 py-2 w-full sm:w-40">
+                        <option value="">Semua Bulan</option>
+                        @for($i = 1; $i <= 12; $i++)
+                            <option value="{{ $i }}" {{ request('month') == $i ? 'selected' : '' }}>
+                                {{ date('F', mktime(0, 0, 0, $i, 1)) }}
+                            </option>
+                        @endfor
+                    </select>
 
-                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Filter
-                        </button>
-                    </form>
-                </div>
+                    <select name="year"
+                        class="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg px-4 py-2 w-full sm:w-40">
+                        <option value="">Semua Tahun</option>
+                        @for($i = date('Y'); $i >= date('Y') - 5; $i--)
+                            <option value="{{ $i }}" {{ request('year') == $i ? 'selected' : '' }}>
+                                {{ $i }}
+                            </option>
+                        @endfor
+                    </select>
+
+                    <button type="submit"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full sm:w-auto">
+                        Filter
+                    </button>
+                </form>
             </div>
 
-            <!-- Tabel Ringkasan -->
+            <!-- Table Wrapper -->
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
                     <thead class="bg-gray-50 dark:bg-gray-700">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Siswa
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kelas
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total
-                                Hari</th>
-                            <th class="px-6 py-3">Hadir</th>
-                            <th class="px-6 py-3">Tidak Hadir</th>
-                            <th class="px-6 py-3">Terlambat</th>
-                            <th class="px-6 py-3">Izin</th>
-                            <th class="px-6 py-3">Persentase Hadir</th>
-                            <th class="px-6 py-3">Aksi</th>
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                                Siswa</th>
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                                Kelas</th>
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                                Total Hari</th>
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                                Hadir</th>
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                                Tidak Hadir</th>
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                                Terlambat</th>
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                                Izin</th>
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                                Persentase</th>
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider">
+                                Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                         @forelse($summary as $studentSummary)
                             <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <td class="px-6 py-4">
+
+                                <td class="px-6 py-4" data-label="Siswa">
                                     <div class="flex items-center">
                                         <div
                                             class="h-10 w-10 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
@@ -90,54 +109,45 @@
                                     </div>
                                 </td>
 
-                                <td class="px-6 py-4 text-gray-900 dark:text-gray-200">
+                                <td class="px-6 py-4" data-label="Kelas">
                                     {{ $studentSummary['student']->class->name ?? '-' }}
                                 </td>
 
-                                <td class="px-6 py-4 text-gray-900 dark:text-gray-200">
+                                <td class="px-6 py-4" data-label="Total Hari">
                                     {{ $studentSummary['total'] }}
                                 </td>
 
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4" data-label="Hadir">
                                     <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                         {{ $studentSummary['present'] }}
                                     </span>
                                 </td>
 
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4" data-label="Tidak Hadir">
                                     <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                         {{ $studentSummary['absent'] }}
                                     </span>
                                 </td>
 
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4" data-label="Terlambat">
                                     <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                                         {{ $studentSummary['late'] }}
                                     </span>
                                 </td>
 
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4" data-label="Izin">
                                     <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                         {{ $studentSummary['excused'] }}
                                     </span>
                                 </td>
 
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center">
-                                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                            <div class="bg-green-600 h-2 rounded-full"
-                                                style="width: {{ $studentSummary['present_percentage'] }}%"></div>
-                                        </div>
-                                        <span class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-200">
-                                            {{ $studentSummary['present_percentage'] }}%
-                                        </span>
-                                    </div>
+                                <td class="px-6 py-4" data-label="Persentase Hadir">
+                                    {{ $studentSummary['present_percentage'] }}%
                                 </td>
 
-                                <!-- Tombol modal -->
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4" data-label="Aksi">
                                     <button
-                                        class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-bold py-2 px-4 rounded view-chart-btn"
+                                        class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2 px-4 rounded sm:w-auto view-chart-btn"
                                         data-student-name="{{ $studentSummary['student']->name }}"
                                         data-class-name="{{ $studentSummary['student']->class->name ?? '-' }}"
                                         data-present="{{ $studentSummary['present'] }}"
@@ -148,6 +158,7 @@
                                         Lihat
                                     </button>
                                 </td>
+
                             </tr>
                         @empty
                             <tr>
@@ -157,10 +168,13 @@
                             </tr>
                         @endforelse
                     </tbody>
+
                 </table>
             </div>
+
         </div>
     </div>
+
 
     <!-- Modal Chart (Alpine.js) -->
     <div x-data="{ open: false }" x-show="open" style="display: none" x-on:open-modal.window="open = true"
@@ -191,6 +205,43 @@
             </div>
         </div>
     </div>
+
+    <style>
+        /* Mode card saat mobile */
+        @media (max-width: 640px) {
+
+            table thead {
+                display: none !important;
+            }
+
+            table tbody tr {
+                display: block;
+                margin-bottom: 1rem;
+                border: 1px solid #e5e7eb;
+                border-radius: 0.75rem;
+                padding: 1rem;
+                background: white;
+            }
+
+            table tbody tr td {
+                display: flex;
+                justify-content: space-between;
+                padding: 0.5rem 0;
+                border: none !important;
+            }
+
+            table tbody tr td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: #4b5563;
+            }
+
+            .min-w-full {
+                width: 100% !important;
+                display: block;
+            }
+        }
+    </style>
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

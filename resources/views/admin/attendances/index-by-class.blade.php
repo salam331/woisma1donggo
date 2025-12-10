@@ -205,9 +205,8 @@
                             <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Tidak Hadir</th>
                             <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Terlambat</th>
                             <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Izin</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Persentase Hadir
-                            </th>
-                            <th class="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider">Aksi</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Persentase Hadir</th>
+                            <th class="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider">Aksi</th>
                         </tr>
                     </thead>
 
@@ -246,20 +245,30 @@
 
                                 <td data-label="Aksi" class="px-6 py-4 whitespace-nowrap text-right">
                                     <!-- Desktop -->
-                                    <div class="hidden sm:flex justify-end">
-                                        <a href="{{ route('admin.attendances.index-by-subject', ['classId' => $class->id, 'subjectId' => $subjectSummary['subject']->id]) }}"
+                                    <div class="flex items-center justify-center gap-x-4">
+                                        {{-- <a href=""
                                             class="text-blue-600 hover:text-blue-900 font-semibold">
                                             Lihat
+                                        </a> --}}
+                                        <a href="{{ route('admin.attendances.index-by-subject', ['classId' => $class->id, 'subjectId' => $subjectSummary['subject']->id]) }}"
+                                            class="p-2 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 hover:text-blue-900 transition-colors duration-200 shadow-sm">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.8" stroke="currentColor" class="w-5 h-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            </svg>
                                         </a>
                                     </div>
 
                                     <!-- Mobile -->
-                                    <div class="mobile-actions sm:hidden">
+                                    {{-- <div class="mobile-actions sm:hidden">
                                         <a href="{{ route('admin.attendances.index-by-subject', ['classId' => $class->id, 'subjectId' => $subjectSummary['subject']->id]) }}"
                                             class="px-3 py-1 text-xs rounded bg-blue-500 text-white">
                                             Lihat
                                         </a>
-                                    </div>
+                                    </div> --}}
                                 </td>
 
                             </tr>
