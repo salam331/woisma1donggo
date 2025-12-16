@@ -11,6 +11,16 @@ use App\Http\Controllers\ContactFormController;
 // Profile Controller
 use App\Http\Controllers\ProfileController;
 
+// Teacher Controllers
+use App\Http\Controllers\Teacher\ClassController;
+use App\Http\Controllers\Teacher\AttendanceController as TeacherAttendanceController;
+use App\Http\Controllers\Teacher\ScheduleController as TeacherScheduleController;
+use App\Http\Controllers\Teacher\MaterialController as TeacherMaterialController;
+use App\Http\Controllers\Teacher\SubjectController as TeacherSubjectController;
+use App\Http\Controllers\Teacher\AnnouncementController as TeacherAnnouncementController;
+use App\Http\Controllers\Teacher\GradeController as TeacherGradeController;
+use App\Http\Controllers\Teacher\ExamController as TeacherExamController;
+
 // Admin Controllers
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
@@ -174,6 +184,64 @@ Route::middleware(['auth', 'role:guru'])
     ->group(function () {
 
     Route::get('/dashboard', fn() => view('guru.dashboard'))->name('dashboard');
+
+
+
+    // Classes
+    Route::get('/classes', [ClassController::class, 'index'])->name('classes.index');
+    Route::get('/classes/{class}', [ClassController::class, 'show'])->name('classes.show');
+    Route::get('/classes/{class}/students', [ClassController::class, 'students'])->name('classes.students');
+    Route::get('/classes/{class}/students/json', [ClassController::class, 'studentsJson'])->name('classes.students.json');
+
+
+    // Attendances
+    Route::get('/attendances', [TeacherAttendanceController::class, 'index'])->name('attendances.index');
+    Route::get('/attendances/create', [TeacherAttendanceController::class, 'create'])->name('attendances.create');
+    Route::post('/attendances', [TeacherAttendanceController::class, 'store'])->name('attendances.store');
+    Route::get('/attendances/summary', [TeacherAttendanceController::class, 'summary'])->name('attendances.summary');
+    Route::get('/attendances/{attendance}', [TeacherAttendanceController::class, 'show'])->name('attendances.show');
+    Route::get('/attendances/{attendance}/edit', [TeacherAttendanceController::class, 'edit'])->name('attendances.edit');
+    Route::put('/attendances/{attendance}', [TeacherAttendanceController::class, 'update'])->name('attendances.update');
+    Route::delete('/attendances/{attendance}', [TeacherAttendanceController::class, 'destroy'])->name('attendances.destroy');
+    Route::get('/attendances/class/{classId}', [TeacherAttendanceController::class, 'indexByClass'])->name('attendances.index-by-class');
+    Route::get('/attendances/class/{classId}/subject/{subjectId}', [TeacherAttendanceController::class, 'indexBySubject'])->name('attendances.index-by-subject');
+    Route::get('/attendances/student/{studentId}/subject/{subjectId}', [TeacherAttendanceController::class, 'studentHistory'])->name('attendances.student-history');
+
+    // Schedules
+    Route::get('/schedules', [TeacherScheduleController::class, 'index'])->name('schedules.index');
+    Route::get('/schedules/{schedule}', [TeacherScheduleController::class, 'show'])->name('schedules.show');
+
+    // Materials
+    Route::resource('materials', TeacherMaterialController::class);
+    Route::get('materials/{material}/download', [TeacherMaterialController::class, 'download'])->name('materials.download');
+
+    // Subjects
+    Route::get('/subjects', [TeacherSubjectController::class, 'index'])->name('subjects.index');
+    Route::get('/subjects/{subject}', [TeacherSubjectController::class, 'show'])->name('subjects.show');
+
+
+    // Announcements - Only view routes (creation/editing is handled by admin)
+    Route::get('/announcements', [TeacherAnnouncementController::class, 'index'])->name('announcements.index');
+    Route::get('/announcements/{announcement}', [TeacherAnnouncementController::class, 'show'])->name('announcements.show');
+
+    // Grades (nilai)
+    Route::get('/grades', [TeacherGradeController::class, 'index'])->name('grades.index');
+    Route::get('/grades/class/{classId}', [TeacherGradeController::class, 'showClass'])->name('grades.class');
+    Route::get('/grades/class/{classId}/subject/{subjectId}', [TeacherGradeController::class, 'showSubject'])->name('grades.subject');
+    Route::get('/grades/class/{classId}/subject/{subjectId}/exam/{examId}', [TeacherGradeController::class, 'showExam'])->name('grades.exam');
+    Route::get('/grades/class/{classId}/subject/{subjectId}/exam/{examId}/edit', [TeacherGradeController::class, 'editExam'])->name('grades.edit-exam');
+    Route::put('/grades/class/{classId}/subject/{subjectId}/exam/{examId}/update', [TeacherGradeController::class, 'updateExam'])->name('grades.update-exam');
+    Route::get('/grades/class/{classId}/subject/{subjectId}/exam/{examId}/student/{studentId}', [TeacherGradeController::class, 'showStudent'])->name('grades.student');
+
+    // AJAX routes for grades
+    Route::get('grades/get-subjects/{classId}', [TeacherGradeController::class, 'getSubjectsByClass'])->name('grades.get-subjects');
+    Route::get('grades/get-exams/{classId}/{subjectId}', [TeacherGradeController::class, 'getExamsByClassAndSubject'])->name('grades.get-exams');
+    Route::get('grades/get-students/{classId}', [TeacherGradeController::class, 'getStudentsByClass'])->name('grades.get-students');
+
+    // Exams (ujian)
+    Route::resource('exams', TeacherExamController::class);
+    Route::get('exams/get-teachers/{classId}', [TeacherExamController::class, 'getTeachersByClass'])->name('exams.get-teachers');
+    Route::get('exams/get-subjects/{teacherId}', [TeacherExamController::class, 'getSubjectsByTeacher'])->name('exams.get-subjects');
 });
 
 

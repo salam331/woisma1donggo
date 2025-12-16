@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\Student;
 use App\Models\Schedule;
+use App\Models\SchoolClass;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
@@ -15,9 +17,49 @@ class AttendanceController extends Controller
      */
     public function index(Request $request)
     {
-        $classes = \App\Models\SchoolClass::all();
+        $allClasses = SchoolClass::orderBy('name')->get();
+        $selectedClassId = $request->get('class_id');
+        $selectedClass = null;
+        $todayAttendances = collect();
+        $attendanceHistory = collect();
+        $todaySchedules = collect();
+        $today = Carbon::today();
+        $sevenDaysAgo = Carbon::today()->subDays(7);
 
-        $classSummaries = $classes->map(function ($class) {
+        if (!$selectedClassId && $allClasses->count() > 0) {
+            $selectedClassId = $allClasses->first()->id;
+        }
+
+        if ($selectedClassId) {
+            $selectedClass = SchoolClass::with(['schedules.subject', 'students'])->find($selectedClassId);
+
+            if ($selectedClass) {
+                $todayAttendances = Attendance::whereHas('schedule', function ($query) use ($selectedClassId) {
+                    $query->where('class_id', $selectedClassId);
+                })
+                ->whereDate('date', $today)
+                ->with(['schedule.class', 'schedule.subject', 'student'])
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+                $attendanceHistory = Attendance::whereHas('schedule', function ($query) use ($selectedClassId) {
+                    $query->where('class_id', $selectedClassId);
+                })
+                ->whereDate('date', '>=', $sevenDaysAgo)
+                ->whereDate('date', '<', $today)
+                ->with(['schedule.class', 'schedule.subject', 'student'])
+                ->orderBy('date', 'desc')
+                ->orderBy('created_at', 'desc')
+                ->paginate(20);
+
+                $todaySchedules = Schedule::where('class_id', $selectedClassId)
+                    ->with(['class', 'subject', 'teacher'])
+                    ->orderBy('start_time')
+                    ->get();
+            }
+        }
+
+        $classSummaries = $allClasses->map(function ($class) {
             $totalAttendances = Attendance::whereHas('schedule', function ($q) use ($class) {
                 $q->where('class_id', $class->id);
             })->count();
@@ -49,7 +91,17 @@ class AttendanceController extends Controller
             ];
         });
 
-        return view('admin.attendances.index', compact('classSummaries'));
+        return view('admin.attendances.index', compact(
+            'allClasses',
+            'selectedClass',
+            'selectedClassId',
+            'todayAttendances',
+            'attendanceHistory',
+            'todaySchedules',
+            'classSummaries',
+            'today',
+            'sevenDaysAgo'
+        ));
     }
 
     /**

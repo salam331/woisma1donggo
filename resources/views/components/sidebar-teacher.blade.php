@@ -68,13 +68,13 @@
         <!-- ============================= -->
         <!-- 2. KELAS -->
         <!-- ============================= -->
-        <a href="{{ route('teacher.classes.index') }}"
+        <a href="{{ route('guru.classes.index') }}"
             class="relative flex items-center space-x-3 px-3 py-2 rounded transition duration-200
-            {{ request()->is('teacher/classes*')
+            {{ request()->routeIs('guru.classes.index')
                 ? 'text-blue-600 dark:text-blue-400 font-semibold'
                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800' }}">
 
-            @if (request()->is('teacher/classes*'))
+            @if (request()->routeIs('guru.classes.index'))
                 <span class="absolute left-0 top-0 h-full w-1 bg-blue-600 rounded"></span>
             @endif
 
@@ -90,13 +90,13 @@
         <!-- ============================= -->
         <!-- 3. ABSENSI -->
         <!-- ============================= -->
-        <a href="{{ route('teacher.attendances.index') }}"
+        <a href="{{ route('guru.attendances.index') }}"
             class="relative flex items-center space-x-3 px-3 py-2 rounded transition duration-200
-            {{ request()->is('teacher/attendances*')
+            {{ request()->is('guru/attendances*')
                 ? 'text-blue-600 dark:text-blue-400 font-semibold'
                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800' }}">
 
-            @if (request()->is('teacher/attendances*'))
+            @if (request()->is('guru/attendances*'))
                 <span class="absolute left-0 top-0 h-full w-1 bg-blue-600 rounded"></span>
             @endif
 
@@ -111,13 +111,13 @@
         <!-- ============================= -->
         <!-- 4. JADWAL PELAJARAN -->
         <!-- ============================= -->
-        <a href="{{ route('teacher.schedules.index') }}"
+        <a href="{{ route('guru.schedules.index') }}"
             class="relative flex items-center space-x-3 px-3 py-2 rounded transition duration-200
-            {{ request()->is('teacher/schedules*')
+            {{ request()->is('guru/schedules*')
                 ? 'text-blue-600 dark:text-blue-400 font-semibold'
                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800' }}">
 
-            @if (request()->is('teacher/schedules*'))
+            @if (request()->is('guru/schedules*'))
                 <span class="absolute left-0 top-0 h-full w-1 bg-blue-600 rounded"></span>
             @endif
 
@@ -133,13 +133,13 @@
         <!-- ============================= -->
         <!-- 5. MATERI PEMBELAJARAN -->
         <!-- ============================= -->
-        <a href="{{ route('teacher.materials.index') }}"
+        <a href="{{ route('guru.materials.index') }}"
             class="relative flex items-center space-x-3 px-3 py-2 rounded transition duration-200
-            {{ request()->is('teacher/materials*')
+            {{ request()->is('guru/materials*')
                 ? 'text-blue-600 dark:text-blue-400 font-semibold'
                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800' }}">
 
-            @if (request()->is('teacher/materials*'))
+            @if (request()->is('guru/materials*'))
                 <span class="absolute left-0 top-0 h-full w-1 bg-blue-600 rounded"></span>
             @endif
 
@@ -155,13 +155,13 @@
         <!-- ============================= -->
         <!-- 6. MATA PELAJARAN -->
         <!-- ============================= -->
-        <a href="{{ route('teacher.subjects.index') }}"
+        <a href="{{ route('guru.subjects.index') }}"
             class="relative flex items-center space-x-3 px-3 py-2 rounded transition duration-200
-            {{ request()->is('teacher/subjects*')
+            {{ request()->is('guru/subjects*')
                 ? 'text-blue-600 dark:text-blue-400 font-semibold'
                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800' }}">
 
-            @if (request()->is('teacher/subjects*'))
+            @if (request()->is('guru/subjects*'))
                 <span class="absolute left-0 top-0 h-full w-1 bg-blue-600 rounded"></span>
             @endif
 
@@ -177,13 +177,13 @@
         <!-- ============================= -->
         <!-- 7. PENGUMUMAN -->
         <!-- ============================= -->
-        <a href="{{ route('teacher.announcements.index') }}"
+        <a href="{{ route('guru.announcements.index') }}"
             class="relative flex items-center space-x-3 px-3 py-2 rounded transition duration-200
-            {{ request()->is('teacher/announcements*')
+            {{ request()->is('guru/announcements*')
                 ? 'text-blue-600 dark:text-blue-400 font-semibold'
                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800' }}">
 
-            @if (request()->is('teacher/announcements*'))
+            @if (request()->is('guru/announcements*'))
                 <span class="absolute left-0 top-0 h-full w-1 bg-blue-600 rounded"></span>
             @endif
 
@@ -199,13 +199,13 @@
         <!-- ============================= -->
         <!-- 8. NILAI -->
         <!-- ============================= -->
-        <a href="{{ route('teacher.grades.index') }}"
+        <a href="{{ route('guru.grades.index') }}"
             class="relative flex items-center space-x-3 px-3 py-2 rounded transition duration-200
-            {{ request()->is('teacher/grades*')
+            {{ request()->is('guru/grades*')
                 ? 'text-blue-600 dark:text-blue-400 font-semibold'
                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800' }}">
 
-            @if (request()->is('teacher/grades*'))
+            @if (request()->is('guru/grades*'))
                 <span class="absolute left-0 top-0 h-full w-1 bg-blue-600 rounded"></span>
             @endif
 
@@ -221,13 +221,13 @@
         <!-- ============================= -->
         <!-- 9. UJIAN -->
         <!-- ============================= -->
-        <a href="{{ route('teacher.exams.index') }}"
+        <a href="{{ route('guru.exams.index') }}"
             class="relative flex items-center space-x-3 px-3 py-2 rounded transition duration-200
-            {{ request()->is('teacher/exams*')
+            {{ request()->is('guru/exams*')
                 ? 'text-blue-600 dark:text-blue-400 font-semibold'
                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800' }}">
 
-            @if (request()->is('teacher/exams*'))
+            @if (request()->is('guru/exams*'))
                 <span class="absolute left-0 top-0 h-full w-1 bg-blue-600 rounded"></span>
             @endif
 
