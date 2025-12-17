@@ -63,7 +63,7 @@ class ExamController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'subject_id' => 'required|exists:subjects,id',
-            'school_class_id' => 'required|exists:school_classes,id',
+            'school_class_id' => 'required|exists:classes,id',
             'exam_date' => 'required|date',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i',
@@ -115,11 +115,16 @@ class ExamController extends Controller
 
         $exam->load(['subject', 'schoolClass', 'teacher']);
 
+
         // Get grades for this exam
         $grades = \App\Models\Grade::where('exam_id', $exam->id)
-            ->with('student')
-            ->orderBy('student.name')
+            ->join('students', 'grades.student_id', '=', 'students.id')
+            ->select('grades.*', 'students.name as student_name')
+            ->orderBy('students.name')
             ->get();
+
+        // Load the student relationship for each grade
+        $grades->load('student');
 
         return view('guru.exams.show', compact('exam', 'grades'));
     }
@@ -166,7 +171,7 @@ class ExamController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'subject_id' => 'required|exists:subjects,id',
-            'school_class_id' => 'required|exists:school_classes,id',
+            'school_class_id' => 'required|exists:classes,id',
             'exam_date' => 'required|date',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i',
@@ -233,6 +238,7 @@ class ExamController extends Controller
         return response()->json($teachers);
     }
 
+
     /**
      * Get subjects by teacher for AJAX requests.
      */
@@ -240,6 +246,22 @@ class ExamController extends Controller
     {
         $subjects = \App\Models\Subject::whereHas('schedules', function ($query) use ($teacherId) {
             $query->where('teacher_id', $teacherId);
+        })->get();
+
+        return response()->json($subjects);
+    }
+
+    /**
+     * Get subjects by class for AJAX requests.
+     */
+    public function getSubjectsByClass($classId)
+    {
+        $teacher = Auth::user()->teacher;
+        
+        // Get subjects taught by this teacher in the specified class
+        $subjects = \App\Models\Subject::whereHas('schedules', function ($query) use ($teacher, $classId) {
+            $query->where('teacher_id', $teacher->id)
+                  ->where('class_id', $classId);
         })->get();
 
         return response()->json($subjects);

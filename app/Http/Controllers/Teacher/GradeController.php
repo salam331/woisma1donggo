@@ -131,12 +131,39 @@ class GradeController extends Controller
         return view('guru.grades.exam', compact('class', 'subject', 'exam', 'students', 'grades'));
     }
 
+
     /**
      * Show the form for editing exam grades.
      */
     public function editExam($classId, $subjectId, $examId)
     {
-        return $this->showExam($classId, $subjectId, $examId);
+        $teacher = Auth::user()->teacher;
+
+        if (!$teacher) {
+            return redirect()->route('guru.dashboard')->with('error', 'Data guru tidak ditemukan.');
+        }
+
+        $class = \App\Models\SchoolClass::findOrFail($classId);
+        $subject = \App\Models\Subject::findOrFail($subjectId);
+        $exam = Exam::findOrFail($examId);
+
+        // Verify the exam belongs to this teacher and class/subject
+        if ($exam->teacher_id !== $teacher->id || $exam->school_class_id != $classId || $exam->subject_id != $subjectId) {
+            abort(403);
+        }
+
+        $exam->load(['schoolClass', 'subject', 'teacher']);
+
+        // Get all students in the class
+        $students = $class->students()->orderBy('name')->get();
+
+        // Get existing grades for this exam
+        $grades = Grade::where('exam_id', $examId)
+            ->with('student')
+            ->get()
+            ->keyBy('student_id');
+
+        return view('guru.grades.edit', compact('class', 'subject', 'exam', 'students', 'grades'));
     }
 
     /**
@@ -157,22 +184,31 @@ class GradeController extends Controller
             abort(403);
         }
 
+
         $request->validate([
             'grades' => 'required|array',
             'grades.*.student_id' => 'required|exists:students,id',
-            'grades.*.score' => 'required|numeric|min:0|max:100',
+            'grades.*.score' => 'nullable|numeric|min:0|max:100',
         ]);
 
+
         foreach ($request->grades as $gradeData) {
-            Grade::updateOrCreate(
-                [
-                    'exam_id' => $examId,
-                    'student_id' => $gradeData['student_id'],
-                ],
-                [
-                    'score' => $gradeData['score'],
-                ]
-            );
+            if ($gradeData['score'] !== null && $gradeData['score'] !== '') {
+                Grade::updateOrCreate(
+                    [
+                        'exam_id' => $examId,
+                        'student_id' => $gradeData['student_id'],
+                    ],
+                    [
+                        'score' => $gradeData['score'],
+                    ]
+                );
+            } else {
+                // If score is empty, delete the grade record if it exists
+                Grade::where('exam_id', $examId)
+                    ->where('student_id', $gradeData['student_id'])
+                    ->delete();
+            }
         }
 
         return redirect()->route('guru.grades.exam', [$classId, $subjectId, $examId])

@@ -211,9 +211,11 @@ Route::middleware(['auth', 'role:guru'])
     Route::get('/schedules', [TeacherScheduleController::class, 'index'])->name('schedules.index');
     Route::get('/schedules/{schedule}', [TeacherScheduleController::class, 'show'])->name('schedules.show');
 
+
     // Materials
     Route::resource('materials', TeacherMaterialController::class);
     Route::get('materials/{material}/download', [TeacherMaterialController::class, 'download'])->name('materials.download');
+    Route::get('materials/get-subjects-by-class/{classId}', [TeacherMaterialController::class, 'getSubjectsByClass'])->name('materials.get-subjects-by-class');
 
     // Subjects
     Route::get('/subjects', [TeacherSubjectController::class, 'index'])->name('subjects.index');
@@ -238,10 +240,12 @@ Route::middleware(['auth', 'role:guru'])
     Route::get('grades/get-exams/{classId}/{subjectId}', [TeacherGradeController::class, 'getExamsByClassAndSubject'])->name('grades.get-exams');
     Route::get('grades/get-students/{classId}', [TeacherGradeController::class, 'getStudentsByClass'])->name('grades.get-students');
 
+
     // Exams (ujian)
     Route::resource('exams', TeacherExamController::class);
     Route::get('exams/get-teachers/{classId}', [TeacherExamController::class, 'getTeachersByClass'])->name('exams.get-teachers');
     Route::get('exams/get-subjects/{teacherId}', [TeacherExamController::class, 'getSubjectsByTeacher'])->name('exams.get-subjects');
+    Route::get('exams/get-subjects-by-class/{classId}', [TeacherExamController::class, 'getSubjectsByClass'])->name('exams.get-subjects-by-class');
 });
 
 

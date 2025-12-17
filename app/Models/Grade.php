@@ -14,6 +14,8 @@ class Grade extends Model
         'score',
         'grade_letter',
         'notes',
+        'name',
+        'nis',
     ];
 
     protected $casts = [

@@ -49,11 +49,11 @@
                                 <div class="flex items-start justify-between">
                                     <div class="flex-1">
                                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                                            {{ $exam->title }}
+                                            {{ $exam->name }}
                                         </h3>
                                         <div class="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
                                             <span>Tanggal: {{ $exam->exam_date->format('d M Y') }}</span>
-                                            <span>Jenis: {{ ucfirst($exam->type ?? 'N/A') }}</span>
+                                            <span>Status:</span>
                                             @if($exam->is_published)
                                                 <span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">Published</span>
                                             @else

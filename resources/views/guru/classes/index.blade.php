@@ -48,8 +48,8 @@
                                         @if($class->major)
                                             <p><strong>Jurusan:</strong> {{ $class->major }}</p>
                                         @endif
-                                        <p><strong>Tahun Ajaran:</strong> {{ $class->academic_year }}</p>
-                                        <p><strong>Kapasitas:</strong> {{ $class->capacity }} siswa</p>
+                                        <p><strong>Wali Kelas:</strong> {{ $class->teacher->name }}</p>
+                                        {{-- <p><strong>Kapasitas:</strong> {{ $class->capacity }} siswa</p> --}}
                                         <p><strong>Jumlah Siswa:</strong> {{ $class->statistics['total_students'] }} siswa</p>
                                     </div>
 

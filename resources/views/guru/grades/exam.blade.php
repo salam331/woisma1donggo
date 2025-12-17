@@ -42,6 +42,12 @@
                 @endif
 
                 <!-- Grades Table -->
+                {{-- tambahkan edit di atas table --}}
+
+                <a href="{{ route('guru.grades.edit-exam', [$class->id, $subject->id, $exam->id]) }}"
+                   class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-6">
+                    Edit Nilai
+                </a>
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border dark:border-gray-700 overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full">
@@ -81,7 +87,7 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                        {{ $student->student_id ?? 'N/A' }}
+                                        {{ $student->nis ?? 'N/A' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="text-sm font-medium {{ $score ? 'text-gray-900 dark:text-gray-300' : 'text-gray-400' }}">

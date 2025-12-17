@@ -31,6 +31,19 @@ class Schedule extends Model
         return $this->belongsTo(Subject::class);
     }
 
+    public function getDayIndoAttribute()
+{
+    return [
+        'monday'    => 'Senin',
+        'tuesday'   => 'Selasa',
+        'wednesday' => 'Rabu',
+        'thursday'  => 'Kamis',
+        'friday'    => 'Jumat',
+        'saturday'  => 'Sabtu',
+        'sunday'    => 'Minggu',
+    ][strtolower($this->day)] ?? '-';
+}
+
     public function teacher(): BelongsTo
     {
         return $this->belongsTo(Teacher::class);

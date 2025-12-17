@@ -82,6 +82,11 @@ class MaterialController extends Controller
 
         $filePath = $request->file('file')->store('materials', 'public');
 
+
+        // Determine file type based on MIME type
+        $mimeType = $request->file('file')->getMimeType();
+        $fileType = $this->getFileTypeFromMimeType($mimeType);
+
         Material::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -89,9 +94,10 @@ class MaterialController extends Controller
             'class_id' => $request->class_id,
             'teacher_id' => $teacher->id,
             'file_path' => $filePath,
+            'file_type' => $fileType,
             'file_name' => $request->file('file')->getClientOriginalName(),
             'file_size' => $request->file('file')->getSize(),
-            'mime_type' => $request->file('file')->getMimeType(),
+            'mime_type' => $mimeType,
             'is_public' => $request->boolean('is_public'),
         ]);
 
@@ -218,6 +224,8 @@ class MaterialController extends Controller
             ->with('success', 'Materi berhasil dihapus.');
     }
 
+
+
     /**
      * Download the specified material.
      */
@@ -231,5 +239,60 @@ class MaterialController extends Controller
         }
 
         return Storage::disk('public')->download($material->file_path, $material->file_name);
+    }
+
+    /**
+     * Get subjects for a specific class (AJAX endpoint)
+     */
+    public function getSubjectsByClass($classId)
+    {
+        $teacher = Auth::user()->teacher;
+
+        if (!$teacher) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        // Get subjects that this teacher teaches in this specific class
+        $subjects = \App\Models\Subject::whereHas('schedules', function ($query) use ($teacher, $classId) {
+            $query->where('teacher_id', $teacher->id)
+                  ->where('class_id', $classId);
+        })->get();
+
+        return response()->json($subjects);
+    }
+
+    /**
+     * Determine file type based on MIME type
+     */
+    private function getFileTypeFromMimeType($mimeType)
+    {
+        $fileTypes = [
+            // Documents
+            'application/pdf' => 'document',
+            'application/msword' => 'document',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'document',
+            'application/vnd.ms-excel' => 'document',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'document',
+            'application/vnd.ms-powerpoint' => 'document',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'document',
+            'text/plain' => 'document',
+            
+            // Images
+            'image/jpeg' => 'image',
+            'image/jpg' => 'image',
+            'image/png' => 'image',
+            'image/gif' => 'image',
+            'image/webp' => 'image',
+            'image/svg+xml' => 'image',
+            
+            // Videos
+            'video/mp4' => 'video',
+            'video/avi' => 'video',
+            'video/mov' => 'video',
+            'video/wmv' => 'video',
+            'video/quicktime' => 'video',
+        ];
+
+        return $fileTypes[$mimeType] ?? 'other';
     }
 }
