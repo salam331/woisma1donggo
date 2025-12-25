@@ -6,9 +6,14 @@
     <div class="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 lg:max-w-4xl">
         
         {{-- Gambar (MerakiUI) --}}
-        <div class="hidden bg-cover lg:block lg:w-1/2">
+        <div class="hidden lg:flex lg:w-1/2 items-center justify-center bg-blue-100 dark:bg-blue-800">
             {{-- style="background-image: url('https://images.unsplash.com/photo-1606660265514-358ebbadc80d?auto=format&fit=crop&w=1575&q=80');"> --}}
-            <img src="{{ asset('images/logo.png') }}" alt="Logo SMAN 1 Donggo" class="justify-center">
+            {{-- <img src="{{ asset('images/logo.png') }}" alt="Logo SMAN 1 Donggo" class="justify-center"> --}}
+            {{-- buatkan agar gambar di tengah --}}
+            <img src="{{ asset('images/logo.png') }}"
+                alt="Logo SMAN 1 Donggo"
+                class="w-64 mx-auto mt-20">
+
         </div>
 
         {{-- Form --}}
@@ -48,7 +53,7 @@
                         required autofocus autocomplete="username"
                         class="block w-full px-4 py-2 text-gray-700 bg-white
                         border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600
-                        focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-40" />
+                        focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-40" placeholder="example.com"/>
 
                     @error('email')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -72,7 +77,7 @@
                     <input id="password" type="password" name="password" required autocomplete="current-password"
                         class="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg
                         dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600
-                        focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-40" />
+                        focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-40" placeholder="Masukkan Password Anda"/>
 
                     @error('password')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>

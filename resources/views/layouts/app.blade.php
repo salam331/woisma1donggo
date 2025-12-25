@@ -9,7 +9,8 @@
     <script src="//unpkg.com/alpinejs" defer></script>
     <link rel="stylesheet" href="{{ asset('csss/mobile-table.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/trix@1.3.1/dist/trix.css">
-<script src="https://unpkg.com/trix@1.3.1/dist/trix.js" defer></script>
+    <script src="https://unpkg.com/trix@1.3.1/dist/trix.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
     trix-editor {

@@ -407,12 +407,12 @@
         </nav>
 
         <!-- USER PROFILE -->
-        <div class="px-4 py-4 border-t border-gray-200 dark:border-gray-700 flex items-center space-x-3">
+        {{-- <div class="px-4 py-4 border-t border-gray-200 dark:border-gray-700 flex items-center space-x-3">
             <img class="w-8 h-8 rounded-full object-cover"
                 src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=facearea&facepad=4&w=880&h=880&q=100" />
             <div x-show="open" class="flex flex-col transition-opacity duration-300">
                 <span class="text-gray-800 dark:text-gray-200 text-sm font-medium">Admin</span>
                 <span class="text-gray-500 dark:text-gray-400 text-xs">Settings</span>
             </div>
-        </div>
+        </div> --}}
 </aside>

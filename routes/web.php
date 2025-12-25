@@ -21,6 +21,14 @@ use App\Http\Controllers\Teacher\AnnouncementController as TeacherAnnouncementCo
 use App\Http\Controllers\Teacher\GradeController as TeacherGradeController;
 use App\Http\Controllers\Teacher\ExamController as TeacherExamController;
 
+// Student Controllers
+use App\Http\Controllers\Student\ScheduleController as StudentScheduleController;
+use App\Http\Controllers\Student\AttendanceController as StudentAttendanceController;
+use App\Http\Controllers\Student\GradeController as StudentGradeController;
+use App\Http\Controllers\Student\MaterialController as StudentMaterialController;
+use App\Http\Controllers\Student\AnnouncementController as StudentAnnouncementController;
+use App\Http\Controllers\Student\BillController as StudentBillController;
+
 // Admin Controllers
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
@@ -261,6 +269,20 @@ Route::middleware(['auth', 'role:siswa'])
     ->group(function () {
 
     Route::get('/dashboard', fn() => view('siswa.dashboard'))->name('dashboard');
+
+    Route::get('/schedules', [StudentScheduleController::class, 'index'])->name('schedules.index');
+    Route::get('/schedules/download', [StudentScheduleController::class, 'downloadSchedule'])->name('schedules.download');
+
+    Route::get('/attendances', [StudentAttendanceController::class, 'index'])->name('attendances.index');
+    Route::get('/attendances/{subjectId}', [StudentAttendanceController::class, 'show'])->name('attendances.show');
+
+    Route::get('/grades', [StudentGradeController::class, 'index'])->name('grades.index');
+    Route::get('/grades/subjects', [StudentGradeController::class, 'subjects'])->name('grades.subjects');
+    Route::get('/grades/subjects/{subjectId}', [StudentGradeController::class, 'showSubject'])->name('grades.subject');
+    Route::get('/materials', [StudentMaterialController::class, 'index'])->name('materials.index');
+    Route::get('/materials/{material}/download', [StudentMaterialController::class, 'download'])->name('materials.download');
+    Route::get('/announcements', [StudentAnnouncementController::class, 'index'])->name('announcements.index');
+    Route::get('/bills', [StudentBillController::class, 'index'])->name('bills.index');
 });
 
 
