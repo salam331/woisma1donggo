@@ -12,6 +12,7 @@ class Invoice extends Model
         'invoice_number',
         'description',
         'amount',
+        'paid_amount',
         'due_date',
         'status',
         'payment_date',
@@ -20,6 +21,7 @@ class Invoice extends Model
 
     protected $casts = [
         'amount' => 'decimal:2',
+        'paid_amount' => 'decimal:2',
         'due_date' => 'date',
         'payment_date' => 'date',
     ];

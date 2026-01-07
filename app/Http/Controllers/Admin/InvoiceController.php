@@ -98,6 +98,53 @@ class InvoiceController extends Controller
     }
 
     /**
+     * Process payment for the specified invoice.
+     */
+    public function payment(Request $request, Invoice $invoice)
+    {
+        $request->validate([
+            'pay_amount' => 'required|numeric|min:1',
+            'payment_date' => 'required|date',
+            'notes' => 'nullable|string|max:500',
+        ]);
+
+        $payAmount = (float) $request->pay_amount;
+        $totalAmount = (float) $invoice->amount;
+        $currentPaidAmount = (float) ($invoice->paid_amount ?? 0);
+        $newPaidAmount = $currentPaidAmount + $payAmount;
+
+        // Check if payment amount is valid
+        if ($newPaidAmount > $totalAmount) {
+            return redirect()->back()
+                ->with('error', 'Jumlah pembayaran melebihi total tagihan.')
+                ->withInput();
+        }
+
+        // Build notes with payment history
+        $paymentNote = '[' . date('d/m/Y H:i') . '] Pembayaran: Rp ' . number_format($payAmount, 0, ',', '.');
+        if ($request->notes) {
+            $paymentNote .= ' - Catatan: ' . $request->notes;
+        }
+        $newNotes = $invoice->notes ? $invoice->notes . '\n' . $paymentNote : $paymentNote;
+
+        // Determine status based on payment
+        $status = ($newPaidAmount >= $totalAmount) ? 'paid' : 'unpaid';
+
+        // Update invoice
+        $invoice->update([
+            'status' => $status,
+            'paid_amount' => $newPaidAmount,
+            'payment_date' => $request->payment_date,
+            'notes' => $newNotes,
+        ]);
+
+        $statusMessage = ($status === 'paid') ? 'Lunas' : 'Cicilan (' . number_format($newPaidAmount, 0, ',', '.') . '/' . number_format($totalAmount, 0, ',', '.') . ')';
+
+        return redirect()->route('admin.invoices.index')
+            ->with('success', 'Pembayaran tagihan #' . $invoice->invoice_number . ' berhasil diproses. Status: ' . $statusMessage);
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Invoice $invoice)
@@ -107,3 +154,4 @@ class InvoiceController extends Controller
         return redirect()->route('admin.invoices.index')->with('success', 'Invoice deleted successfully.');
     }
 }
+

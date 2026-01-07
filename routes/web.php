@@ -130,6 +130,8 @@ Route::middleware(['auth', 'role:admin'])
     Route::resource('subjects', SubjectController::class);
 
     // Materials
+    Route::get('materials/get-classes-by-teacher/{teacherId}', [MaterialController::class, 'getClassesByTeacher'])->name('materials.get-classes-by-teacher');
+    Route::get('materials/get-subjects-by-teacher-class/{teacherId}/{classId}', [MaterialController::class, 'getSubjectsByTeacherClass'])->name('materials.get-subjects-by-teacher-class');
     Route::resource('materials', MaterialController::class);
     Route::get('materials/{material}/download', [MaterialController::class, 'download'])->name('materials.download');
 
@@ -145,6 +147,7 @@ Route::middleware(['auth', 'role:admin'])
 
     // Invoices
     Route::resource('invoices', InvoiceController::class);
+    Route::post('invoices/{invoice}/payment', [InvoiceController::class, 'payment'])->name('invoices.payment');
 
     // School Profiles
     Route::resource('school-profiles', SchoolProfileController::class);

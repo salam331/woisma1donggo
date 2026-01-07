@@ -53,6 +53,49 @@
                                 </dd>
                             </div>
 
+                            {{-- Paid Amount Information --}}
+                            <div class="col-span-2 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mt-4">
+                                <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Informasi Pembayaran</h4>
+                                <dl class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <dt class="text-xs text-gray-500 dark:text-gray-400">Total Tagihan</dt>
+                                        <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                            Rp {{ number_format($invoice->amount, 0, ',', '.') }}
+                                        </dd>
+                                    </div>
+                                    <div>
+                                        <dt class="text-xs text-gray-500 dark:text-gray-400">Sudah Dibayar</dt>
+                                        <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                            Rp {{ number_format($invoice->paid_amount ?? 0, 0, ',', '.') }}
+                                        </dd>
+                                    </div>
+                                    <div>
+                                        <dt class="text-xs text-gray-500 dark:text-gray-400">Sisa Tagihan</dt>
+                                        <dd class="text-sm font-medium text-green-600">
+                                            Rp {{ number_format($invoice->amount - ($invoice->paid_amount ?? 0), 0, ',', '.') }}
+                                        </dd>
+                                    </div>
+                                    <div>
+                                        <dt class="text-xs text-gray-500 dark:text-gray-400">Status</dt>
+                                        <dd class="text-sm font-medium">
+                                            @if($invoice->status == 'paid')
+                                                <span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    Lunas
+                                                </span>
+                                            @elseif($invoice->paid_amount > 0)
+                                                <span class="px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                    Cicilan
+                                                </span>
+                                            @else
+                                                <span class="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                    Belum Dibayar
+                                                </span>
+                                            @endif
+                                        </dd>
+                                    </div>
+                                </dl>
+                            </div>
+
                             <div>
                                 <dt class="text-sm font-medium text-gray-500">Jatuh Tempo</dt>
                                 <dd class="mt-1 text-sm text-gray-900">
@@ -99,9 +142,12 @@
                     </div>
 
                     @if($invoice->notes)
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500">Catatan</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ $invoice->notes }}</dd>
+                        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mt-4">
+                            <dt class="text-sm font-medium text-blue-800 dark:text-blue-300">Catatan</dt>
+                            {{-- <dd class="mt-1 text-sm text-blue-700 dark:text-blue-200 whitespace-pre-line">{{ $invoice->notes }}</dd> --}}
+                            <dd class="mt-1 text-sm text-blue-700 dark:text-blue-200 whitespace-pre-line">
+                                {{ str_replace('\n', "\n", $invoice->notes) }}
+                            </dd>
                         </div>
                     @endif
                 </div>

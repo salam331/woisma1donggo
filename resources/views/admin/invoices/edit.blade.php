@@ -96,6 +96,48 @@
                                 @enderror
                             </div>
 
+                            {{-- Paid Amount Display --}}
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Informasi Pembayaran</h4>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">Total Tagihan</span>
+                                        <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                            Rp {{ number_format($invoice->amount, 0, ',', '.') }}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">Sudah Dibayar</span>
+                                        <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                            Rp {{ number_format($invoice->paid_amount ?? 0, 0, ',', '.') }}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">Sisa Tagihan</span>
+                                        <p class="text-sm font-medium text-green-600">
+                                            Rp {{ number_format($invoice->amount - ($invoice->paid_amount ?? 0), 0, ',', '.') }}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">Status</span>
+                                        <p class="text-sm font-medium">
+                                            @if($invoice->status == 'paid')
+                                                <span class="text-green-600">Lunas</span>
+                                            @elseif($invoice->paid_amount > 0)
+                                                <span class="text-yellow-600">Cicilan</span>
+                                            @else
+                                                <span class="text-gray-600">Belum Dibayar</span>
+                                            @endif
+                                        </p>
+                                    </div>
+                                </div>
+                                @if($invoice->paid_amount > 0 && $invoice->status != 'paid')
+                                    <p class="mt-3 text-xs text-yellow-600 dark:text-yellow-400">
+                                        * Gunakan fitur pembayaran pada halaman index untuk mencatat pembayaran tambahan.
+                                    </p>
+                                @endif
+                            </div>
+
                         </div>
 
                         {{-- RIGHT COLUMN --}}
@@ -159,10 +201,15 @@
                                     Catatan (Opsional)
                                 </label>
 
-                                <textarea id="notes" name="notes" rows="3"
+                                {{-- <textarea id="notes" name="notes" rows="3"
                                     class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md">
                                     {{ old('notes', $invoice->notes) }}
+                                </textarea> --}}
+                                <textarea id="notes" name="notes" rows="3"
+                                    class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md">
+                                {{ str_replace('\n', "\n", old('notes', $invoice->notes)) }}
                                 </textarea>
+
 
                                 @error('notes')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

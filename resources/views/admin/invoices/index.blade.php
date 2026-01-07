@@ -2,6 +2,29 @@
 
 @section('title', 'Manajemen Tagihan')
 
+@push('styles')
+<style>
+    /* Modal backdrop animation */
+    .modal-backdrop {
+        transition: opacity 0.3s ease;
+    }
+    
+    .modal-backdrop.in {
+        opacity: 0.5;
+    }
+    
+    /* Modal content animation */
+    .modal-content {
+        transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    }
+    
+    /* Prevent body scroll when modal is open */
+    body.modal-open {
+        overflow: hidden;
+    }
+</style>
+@endpush
+
 @section('content')
 
     {{-- HEADER --}}
@@ -249,8 +272,25 @@
                                         
                                     </td>
 
-                                    <td data-label="Jumlah" class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
-                                        Rp {{ number_format($invoice->amount, 0, ',', '.') }}
+                                    <td data-label="Jumlah" class="px-6 py-4 text-sm">
+                                        @if($invoice->status == 'paid')
+                                            <span class="text-gray-500 dark:text-gray-400 line-through">Rp {{ number_format($invoice->amount, 0, ',', '.') }}</span>
+                                            <span class="ml-2 text-green-600 font-medium">Lunas</span>
+                                        @elseif($invoice->paid_amount > 0)
+                                            <div class="flex flex-col">
+                                                <span class="text-gray-900 dark:text-gray-100 font-medium">
+                                                    Rp {{ number_format($invoice->amount - $invoice->paid_amount, 0, ',', '.') }}
+                                                    <span class="text-xs text-gray-500">tersisa</span>
+                                                </span>
+                                                <span class="text-xs text-gray-500 dark:text-gray-400">
+                                                    Rp {{ number_format($invoice->paid_amount, 0, ',', '.') }} / Rp {{ number_format($invoice->amount, 0, ',', '.') }}
+                                                </span>
+                                            </div>
+                                        @else
+                                            <span class="text-gray-900 dark:text-gray-100 font-medium">
+                                                Rp {{ number_format($invoice->amount, 0, ',', '.') }}
+                                            </span>
+                                        @endif
                                     </td>
 
                                     <td data-label="Jatuh Tempo" class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
@@ -298,6 +338,20 @@
                                                 </svg>
                                             </a>
 
+                                            {{-- Tombol Bayar (Hijau terang) - hanya untuk unpaid/overdue --}}
+                                            @if(in_array($invoice->status, ['unpaid', 'overdue']))
+                                                <button type="button"
+                                                    onclick="openPaymentModal({{ $invoice->id }}, '{{ $invoice->invoice_number }}', '{{ $invoice->student->name ?? '-' }}', {{ $invoice->amount }}, '{{ $invoice->due_date->format('d F Y') }}', {{ $invoice->amount - ($invoice->paid_amount ?? 0) }})"
+                                                    class="p-2 rounded-full bg-green-100 text-green-700 hover:bg-green-200 hover:text-green-900 transition-colors duration-200 shadow-sm"
+                                                    title="Bayar">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                        stroke-width="1.8" stroke="currentColor" class="w-5 h-5">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                                                    </svg>
+                                                </button>
+                                            @endif
+
                                             {{-- Tombol Hapus (Merah terang) --}}
                                             <form method="POST" action="{{ route('admin.invoices.destroy', $invoice) }}" class="inline"
                                                 onsubmit="return confirm('Apakah Anda yakin ingin menghapus tagihan ini?')">
@@ -314,21 +368,6 @@
                                             </form>
 
                                         </div>
-
-
-                                        <!-- MOBILE -->
-                                        {{-- <div class="mobile-actions sm:hidden">
-                                            <a href="{{ route('admin.invoices.show', $invoice) }}"
-                                                class="px-3 py-1 text-xs rounded bg-blue-500 text-white">Lihat</a>
-                                            <a href="{{ route('admin.invoices.edit', $invoice) }}"
-                                                class="px-3 py-1 text-xs rounded bg-indigo-500 text-white">Edit</a>
-                                            <form method="POST" action="{{ route('admin.invoices.destroy', $invoice) }}">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    class="px-3 py-1 text-xs rounded bg-red-500 text-white">Hapus</button>
-                                            </form>
-                                        </div> --}}
                                     </td>
 
                                 </tr>
@@ -351,4 +390,181 @@
                 @endif
             </div>
 
+    {{-- Payment Modal --}}
+    <div id="paymentModal" class="fixed inset-0 z-50 hidden">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity modal-backdrop" onclick="closePaymentModal()"></div>
+        
+        <!-- Modal Panel -->
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                <div class="relative transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg modal-content"
+                    id="paymentModalPanel">
+                    
+                    {{-- Modal Header --}}
+                    <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-green-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                                </svg>
+                            </div>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100" id="modalTitle">
+                                    Pembayaran Tagihan
+                                </h3>
+                                <div class="mt-4">
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Silakan lengkapi data pembayaran berikut:</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Invoice Details --}}
+                    <div class="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6">
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-500 dark:text-gray-400">Nomor Tagihan:</span>
+                                <p class="font-medium text-gray-900 dark:text-gray-100" id="modalInvoiceNumber"></p>
+                            </div>
+                            <div>
+                                <span class="text-gray-500 dark:text-gray-400">Siswa:</span>
+                                <p class="font-medium text-gray-900 dark:text-gray-100" id="modalStudentName"></p>
+                            </div>
+                            <div>
+                                <span class="text-gray-500 dark:text-gray-400">Total Tagihan:</span>
+                                <p class="font-medium text-gray-900 dark:text-gray-100" id="modalTotalAmount"></p>
+                            </div>
+                            <div>
+                                <span class="text-gray-500 dark:text-gray-400">Jatuh Tempo:</span>
+                                <p class="font-medium text-gray-900 dark:text-gray-100" id="modalDueDate"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Payment Form --}}
+                    <form id="paymentForm" method="POST" action="">
+                        @csrf
+                        <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                            <div class="space-y-4">
+                                {{-- Payment Amount --}}
+                                <div>
+                                    <label for="pay_amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Jumlah Pembayaran <span class="text-red-500">*</span>
+                                    </label>
+                                    <div class="relative mt-1 rounded-lg shadow-sm">
+                                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                            <span class="text-gray-500 dark:text-gray-400 sm:text-sm">Rp</span>
+                                        </div>
+                                        <input type="number" name="pay_amount" id="pay_amount" min="1" required
+                                            class="block w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 pl-10 pr-3 py-2 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                            placeholder="0" step="1" min="1">
+                                    </div>
+                                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                        Sisa tagihan: <span id="remainingAmount" class="font-medium text-green-600">Rp 0</span>
+                                    </p>
+                                </div>
+
+                                {{-- Payment Date --}}
+                                <div>
+                                    <label for="payment_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Tanggal Pembayaran <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="date" name="payment_date" id="payment_date" required
+                                        class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-3 py-2 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                        value="{{ date('Y-m-d') }}">
+                                </div>
+
+                                {{-- Notes --}}
+                                <div>
+                                    <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Catatan
+                                    </label>
+                                    <textarea name="notes" id="notes" rows="3" maxlength="500" placeholder="Catatan pembayaran (opsional)..."
+                                        class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-3 py-2 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></textarea>
+                                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Maksimal 500 karakter</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Modal Footer --}}
+                        <div class="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <button type="submit" 
+                                class="inline-flex w-full justify-center rounded-lg border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm">
+                                Konfirmasi Pembayaran
+                            </button>
+                            <button type="button" onclick="closePaymentModal()"
+                                class="mt-3 inline-flex w-full justify-center rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-300 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm">
+                                Batal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- JavaScript for Modal --}}
+    <script>
+        let remainingAmount = 0;
+
+        function openPaymentModal(invoiceId, invoiceNumber, studentName, amount, dueDate, remaining) {
+            // Store remaining amount
+            remainingAmount = remaining;
+            
+            // Set invoice details
+            document.getElementById('modalInvoiceNumber').textContent = invoiceNumber;
+            document.getElementById('modalStudentName').textContent = studentName;
+            document.getElementById('modalTotalAmount').textContent = 'Rp ' + new Intl.NumberFormat('id-ID').format(amount);
+            document.getElementById('modalDueDate').textContent = dueDate;
+            
+            // Update remaining amount display
+            document.getElementById('remainingAmount').textContent = 'Rp ' + new Intl.NumberFormat('id-ID').format(remainingAmount);
+            
+            // Set form action
+            document.getElementById('paymentForm').action = '/admin/invoices/' + invoiceId + '/payment';
+            
+            // Reset form and set default payment amount to remaining
+            document.getElementById('paymentForm').reset();
+            document.getElementById('payment_date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('pay_amount').value = remainingAmount;
+            
+            // Show modal
+            document.getElementById('paymentModal').classList.remove('hidden');
+            document.body.classList.add('modal-open');
+            
+            // Prevent event propagation
+            event.stopPropagation();
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.add('hidden');
+            document.body.classList.remove('modal-open');
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closePaymentModal();
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('paymentModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closePaymentModal();
+            }
+        });
+
+        // Form validation - ensure payment doesn't exceed remaining amount
+        document.getElementById('paymentForm').addEventListener('submit', function(event) {
+            const payAmount = parseFloat(document.getElementById('pay_amount').value);
+            if (payAmount > remainingAmount) {
+                event.preventDefault();
+                alert('Jumlah pembayaran tidak dapat melebihi sisa tagihan (Rp ' + new Intl.NumberFormat('id-ID').format(remainingAmount) + ')');
+            }
+        });
+    </script>
+
 @endsection
+

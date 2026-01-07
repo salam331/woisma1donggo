@@ -19,6 +19,7 @@ class MaterialController extends Controller
         }
 
         $materials = Material::where('class_id', $student->school_class_id)
+            ->where('is_public', true) // Only show public materials
             ->with(['subject', 'teacher'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
@@ -32,6 +33,11 @@ class MaterialController extends Controller
 
         // Verify the material belongs to the student's class
         if ($material->class_id !== $student->school_class_id) {
+            abort(403);
+        }
+
+        // Only allow download if material is public
+        if (!$material->is_public) {
             abort(403);
         }
 

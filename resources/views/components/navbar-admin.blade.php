@@ -72,7 +72,28 @@
                     <div x-data="{ openProfile: false }" class="relative">
                         <button @click="openProfile = !openProfile" class="flex items-center focus:outline-none">
                             <div class="w-9 h-9 overflow-hidden border-2 border-gray-400 rounded-full">
-                                <img src="https://i.pravatar.cc/100?u={{ Auth::id() }}" class="object-cover w-full h-full">
+                                @php
+                                    $userPhoto = null;
+                                    $userName = Auth::user()->name;
+                                    
+                                    // Ambil foto berdasarkan role
+                                    if(Auth::user()->hasRole('siswa') && Auth::user()->student)
+                                        $userPhoto = Auth::user()->student->photo;
+                                    elseif(Auth::user()->hasRole('guru') && Auth::user()->teacher)
+                                        $userPhoto = Auth::user()->teacher->photo;
+                                    elseif(Auth::user()->hasRole('orang_tua') && Auth::user()->parent)
+                                        $userPhoto = Auth::user()->parent->photo;
+                                @endphp
+                                
+                                @if($userPhoto)
+                                    <img src="{{ asset('storage/' . $userPhoto) }}" class="object-cover w-full h-full" alt="{{ $userName }}">
+                                @else
+                                    <div class="w-full h-full bg-gray-300 flex items-center justify-center">
+                                        <span class="text-sm font-medium text-gray-700">
+                                            {{ substr($userName, 0, 1) }}
+                                        </span>
+                                    </div>
+                                @endif
                             </div>
                         </button>
 
