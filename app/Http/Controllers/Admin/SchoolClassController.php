@@ -12,11 +12,44 @@ class SchoolClassController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $classes = SchoolClass::with('teacher')->paginate(10);
-        return view('admin.classes.index', compact('classes'));
+        $query = SchoolClass::with('teacher');
+
+        // SEARCH NAMA KELAS
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+            // berdasarkan relasi wali kelas
+            $query->orWhereHas('teacher', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // FILTER TINGKAT KELAS
+        if ($request->filled('grade_level')) {
+            $query->where('grade_level', $request->grade_level);
+        }
+
+        // FILTER WALI KELAS
+        if ($request->filled('teacher')) {
+            if ($request->teacher === 'with') {
+                $query->whereNotNull('teacher_id');
+            } elseif ($request->teacher === 'without') {
+                $query->whereNull('teacher_id');
+            }
+        }
+
+        $classes = $query->paginate(10)->withQueryString();
+
+        // Ambil daftar tingkat unik untuk dropdown
+        $gradeLevels = SchoolClass::select('grade_level')
+            ->distinct()
+            ->orderBy('grade_level')
+            ->pluck('grade_level');
+
+        return view('admin.classes.index', compact('classes', 'gradeLevels'));
     }
+
 
     /**
      * Show the form for creating a new resource.

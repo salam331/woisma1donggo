@@ -16,11 +16,34 @@ class StudentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $students = Student::with(['class', 'parent'])->paginate(10);
-        return view('admin.students.index', compact('students'));
+        $query = Student::with(['class', 'parent']);
+
+        // SEARCH (nama / NIS)
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('nis', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // FILTER GENDER
+        if ($request->filled('gender')) {
+            $query->where('gender', $request->gender);
+        }
+
+        // FILTER KELAS (INI YANG DIPERBAIKI)
+        if ($request->filled('school_class_id')) {
+            $query->where('school_class_id', $request->school_class_id);
+        }
+
+        $students = $query->paginate(10)->withQueryString();
+        $classes  = SchoolClass::all();
+
+        return view('admin.students.index', compact('students', 'classes'));
     }
+
 
     /**
      * Show the form for creating a new resource.

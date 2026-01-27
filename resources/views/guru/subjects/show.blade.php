@@ -23,17 +23,7 @@
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto p-6">
             <div class="max-w-6xl mx-auto">
-                @if(session('success'))
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                @if(session('error'))
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-                        {{ session('error') }}
-                    </div>
-                @endif
+                {{-- Session alerts removed - now using toast notifications --}}
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <!-- Subject Information -->

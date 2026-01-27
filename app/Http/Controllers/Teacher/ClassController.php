@@ -28,48 +28,29 @@ class ClassController extends Controller
             $query->where('teacher_id', $teacher->id);
         })
         ->with(['students', 'schedules.subject'])
-        ->withCount(['students'])
         ->get()
         ->map(function ($class) use ($teacher) {
-            // Get schedules for this class taught by this teacher
+
             $teacherSchedules = $class->schedules->where('teacher_id', $teacher->id);
-            
-            // Calculate statistics based on teacher's schedules in this class
-            $totalStudents = $class->students->count();
-            $teacherSchedulesCount = $teacherSchedules->count();
-            
-            // Get materials count for this class's subjects taught by this teacher
-            $materialsCount = \App\Models\Material::whereHas('subject', function ($query) use ($teacher, $class) {
-                $query->where('teacher_id', $teacher->id)
-                      ->whereHas('schedules', function ($q) use ($class, $teacher) {
-                          $q->where('class_id', $class->id)
-                            ->where('teacher_id', $teacher->id);
-                      });
-            })->count();
-            
-            // Get exams count for this class taught by this teacher
-            $examsCount = \App\Models\Exam::whereHas('subject', function ($query) use ($teacher, $class) {
-                $query->where('teacher_id', $teacher->id)
-                      ->whereHas('schedules', function ($q) use ($class, $teacher) {
-                          $q->where('class_id', $class->id)
-                            ->where('teacher_id', $teacher->id);
-                      });
-            })->where('school_class_id', $class->id)->count();
 
             $class->statistics = [
-                'total_students' => $totalStudents,
-                'total_schedules' => $teacherSchedulesCount,
-                'materials_count' => $materialsCount,
-                'exams_count' => $examsCount,
-            ];
+                'total_students'   => $class->students->count(),
+                'total_schedules'  => $teacherSchedules->count(),
 
-            $class->teacher_schedules = $teacherSchedules;
+                'materials_count'  => \App\Models\Material::where('class_id', $class->id)
+                    ->where('teacher_id', $teacher->id)
+                    ->count(),
+
+                'exams_count' => \App\Models\Exam::where('school_class_id', $class->id)
+                    ->where('teacher_id', $teacher->id)
+                    ->count(),
+
+            ];
 
             return $class;
         })
-        ->sortBy(function ($class) {
-            return $class->grade_level . $class->name;
-        });
+        ->sortBy(fn ($class) => $class->grade_level . $class->name);
+
 
         return view('guru.classes.index', compact('classes'));
     }

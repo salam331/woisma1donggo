@@ -29,17 +29,7 @@
                     </p>
                 </div>
 
-                @if(session('success'))
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                @if(session('error'))
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-                        {{ session('error') }}
-                    </div>
-                @endif
+                {{-- Session alerts removed - now using toast notifications --}}
 
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border dark:border-gray-700 p-6">
                     @if($subjects->count() > 0)

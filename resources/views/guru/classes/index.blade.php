@@ -45,9 +45,9 @@
                                     </div>
 
                                     <div class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                                        @if($class->major)
+                                        {{-- @if($class->major)
                                             <p><strong>Jurusan:</strong> {{ $class->major }}</p>
-                                        @endif
+                                        @endif --}}
                                         <p><strong>Wali Kelas:</strong> {{ $class->teacher->name }}</p>
                                         {{-- <p><strong>Kapasitas:</strong> {{ $class->capacity }} siswa</p> --}}
                                         <p><strong>Jumlah Siswa:</strong> {{ $class->statistics['total_students'] }} siswa</p>
@@ -81,7 +81,7 @@
                                         </div>
                                         <div class="bg-white dark:bg-gray-600 rounded p-3 text-center">
                                             <div class="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                                                {{ $class->students_count }}
+                                                {{ $class->statistics['total_students'] }}
                                             </div>
                                             <div class="text-xs text-gray-600 dark:text-gray-400">
                                                 Total Siswa

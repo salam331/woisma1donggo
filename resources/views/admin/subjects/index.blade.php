@@ -183,21 +183,38 @@
     <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6">
 
         <!-- Search & Filter -->
-        <div class="mb-6 flex flex-col sm:flex-row justify-between items-center">
-            <div class="mb-4 sm:mb-0 w-full sm:w-auto">
-                <input type="text" placeholder="Cari mata pelajaran..."
-                    class="border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 rounded-lg px-4 py-2 w-full sm:w-64">
-            </div>
+        <form method="GET" action="{{ route('admin.subjects.index') }}"
+            class="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
 
-            <div class="flex space-x-2">
-                <select
-                    class="border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 rounded-lg px-4 py-2">
-                    <option>Semua Guru</option>
-                    <option>Ada Guru Pengajar</option>
-                    <option>Tanpa Guru Pengajar</option>
-                </select>
-            </div>
-        </div>
+            {{-- SEARCH --}}
+            <input
+                type="text"
+                name="search"
+                value="{{ request('search') }}"
+                placeholder="Cari Kode atau Nama Mata Pelajaran..."
+                {{-- oninput="this.form.submit()" --}}
+                class="border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200
+                    rounded-lg px-4 py-2 w-full sm:w-64"
+            >
+
+            {{-- FILTER GURU --}}
+            <select
+                name="teacher_id"
+                onchange="this.form.submit()"
+                class="border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200
+                    rounded-lg px-4 py-2"
+            >
+                <option value="">Semua Guru</option>
+                @foreach ($teachers as $teacher)
+                    <option value="{{ $teacher->id }}"
+                        {{ request('teacher_id') == $teacher->id ? 'selected' : '' }}>
+                        {{ $teacher->name }}
+                    </option>
+                @endforeach
+            </select>
+
+        </form>
+
 
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 table-responsive">

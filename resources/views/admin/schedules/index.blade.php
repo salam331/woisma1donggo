@@ -182,12 +182,65 @@
 
     <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-2">
         <!-- Search Bar -->
-        <div class="mb-6 flex flex-col sm:flex-row justify-between items-center">
-            <div class="mb-4 sm:mb-0 w-full sm:w-auto">
-                <input type="text" placeholder="Cari jadwal..."
-                    class="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-64">
+        <form method="GET" action="{{ route('admin.schedules.index') }}"
+            class="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+
+            {{-- SEARCH --}}
+            <div class="w-full sm:w-64">
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ request('search') }}"
+                    placeholder="Cari mata pelajaran..."
+                    class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700
+                        dark:text-white rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
             </div>
-        </div>
+
+            <div class="flex space-x-2 w-full sm:w-auto">
+
+                {{-- FILTER HARI --}}
+                <select
+                    name="day"
+                    onchange="this.form.submit()"
+                    class="border border-gray-300 dark:border-gray-600 dark:bg-gray-700
+                        dark:text-white rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Semua Hari</option>
+                    @php
+                        $days = [
+                            'monday' => 'Senin',
+                            'tuesday' => 'Selasa',
+                            'wednesday' => 'Rabu',
+                            'thursday' => 'Kamis',
+                            'friday' => 'Jumat',
+                            'saturday' => 'Sabtu',
+                            'sunday' => 'Minggu',
+                        ];
+                    @endphp
+                    @foreach($days as $key => $dayName)
+                        <option value="{{ $key }}"
+                            {{ request('day') == $key ? 'selected' : '' }}>
+                            {{ $dayName }}
+                        </option>
+                    @endforeach
+                </select>
+
+                {{-- FILTER KELAS --}}
+                <select
+                    name="class_id"
+                    onchange="this.form.submit()"
+                    class="border border-gray-300 dark:border-gray-600 dark:bg-gray-700
+                        dark:text-white rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Semua Kelas</option>
+                    @foreach($classes as $class)
+                        <option value="{{ $class->id }}"
+                            {{ request('class_id') == $class->id ? 'selected' : '' }}>
+                            {{ $class->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+            </div>
+        </form>
 
         <!-- Table -->
         <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg overflow-hidden">

@@ -60,17 +60,7 @@
 
         <main class="flex-1 overflow-y-auto p-6">
             <div class="max-w-7xl mx-auto">
-                {{-- @if(session('success'))
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                @if(session('error'))
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-                        {{ session('error') }}
-                    </div>
-                @endif --}}
+                {{-- Session alerts removed - now using toast notifications --}}
 
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border dark:border-gray-700 p-6">
                     <!-- Header -->
@@ -87,28 +77,55 @@
                     </div>
 
                     <!-- Search & Filter -->
-                    <div class="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <form method="GET" action="{{ route('admin.materials.index') }}"
+                        class="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+
+                        {{-- SEARCH --}}
                         <div class="w-full sm:w-64">
-                            <input type="text" placeholder="Cari materi..."
-                                class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
+                            <input
+                                type="text"
+                                name="search"
+                                value="{{ request('search') }}"
+                                placeholder="Cari materi..."
+                                {{-- oninput="this.form.submit()" --}}
+                                class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700
+                                    dark:text-white rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
                         </div>
 
                         <div class="flex space-x-2 w-full sm:w-auto">
-                            <select class="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
+
+                            {{-- FILTER MAPEL --}}
+                            <select
+                                name="subject_id"
+                                onchange="this.form.submit()"
+                                class="border border-gray-300 dark:border-gray-600 dark:bg-gray-700
+                                    dark:text-white rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
                                 <option value="">Semua Mata Pelajaran</option>
                                 @foreach($subjects as $subject)
-                                    <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                                    <option value="{{ $subject->id }}"
+                                        {{ request('subject_id') == $subject->id ? 'selected' : '' }}>
+                                        {{ $subject->name }}
+                                    </option>
                                 @endforeach
                             </select>
 
-                            <select class="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
+                            {{-- FILTER KELAS --}}
+                            <select
+                                name="class_id"
+                                onchange="this.form.submit()"
+                                class="border border-gray-300 dark:border-gray-600 dark:bg-gray-700
+                                    dark:text-white rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
                                 <option value="">Semua Kelas</option>
                                 @foreach($classes as $class)
-                                    <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                    <option value="{{ $class->id }}"
+                                        {{ request('class_id') == $class->id ? 'selected' : '' }}>
+                                        {{ $class->name }}
+                                    </option>
                                 @endforeach
                             </select>
+
                         </div>
-                    </div>
+                    </form>
 
                     <!-- TABLE -->
                     @if($materials->count() > 0)

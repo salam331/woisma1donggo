@@ -13,10 +13,27 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::with('roles')->paginate(10);
-        return view('admin.users.index', compact('users'));
+        $search = $request->query('search');
+        $role   = $request->query('role');
+
+        $users = User::with('roles')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->when($role, function ($query, $role) {
+                $query->whereHas('roles', function ($q) use ($role) {
+                    $q->where('name', $role);
+                });
+            })
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('admin.users.index', compact('users', 'search', 'role'));
     }
 
     /**

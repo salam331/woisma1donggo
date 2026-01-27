@@ -14,11 +14,43 @@ class TeacherController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $teachers = Teacher::paginate(10);
-        return view('admin.teachers.index', compact('teachers'));
+        $search  = $request->query('search');
+        $gender  = $request->query('gender');
+        $subject = $request->query('subject');
+
+        $subjects = Teacher::query()
+            ->whereNotNull('subject_specialization')
+            ->distinct()
+            ->pluck('subject_specialization');
+
+        $teachers = Teacher::query()
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('nip', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->when($gender, function ($query, $gender) {
+                $query->where('gender', $gender);
+            })
+            ->when($subject, function ($query, $subject) {
+                $query->where('subject_specialization', $subject);
+            })
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('admin.teachers.index', compact(
+            'teachers',
+            'subjects',
+            'search',
+            'gender',
+            'subject'
+        ));
     }
+
 
     /**
      * Show the form for creating a new resource.

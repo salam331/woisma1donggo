@@ -68,13 +68,13 @@
                                             </p>
                                         </div>
                                     @endif
-                                    @if($class->major)
+                                    {{-- @if($class->major)
                                         <div>
                                             <label
                                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jurusan</label>
                                             <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $class->major }}</p>
                                         </div>
-                                    @endif
+                                    @endif --}}
                                     {{-- <div>
                                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tahun
                                             Ajaran</label>
@@ -121,7 +121,7 @@
                                         Kehadiran
                                     </a>
 
-                                    <a href="{{ route('guru.attendances.index-by-class', $class) }}"
+                                    <a href="{{ route('guru.schedules.index', $class) }}"
                                         class="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm leading-4 font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

@@ -205,28 +205,56 @@
 
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-2">
             {{-- SEARCH & FILTER --}}
-            <div class="mb-6 flex flex-col sm:flex-row justify-between items-center">
-                <div class="mb-4 sm:mb-0">
-                    <input type="text" placeholder="Cari tagihan..."
-                        class="border dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg px-4 py-2 w-full sm:w-64">
+            <form method="GET" action="{{ route('admin.invoices.index') }}"
+                class="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+
+                {{-- SEARCH --}}
+                <div class="w-full sm:w-64">
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ request('search') }}"
+                        placeholder="Cari tagihan / siswa / NIS..."
+                        class="w-full border dark:border-gray-700 bg-white dark:bg-gray-800
+                            text-gray-900 dark:text-gray-100 rounded-lg px-4 py-2
+                            focus:ring focus:ring-indigo-300"
+                        {{-- oninput="this.form.submit()" --}}
+                    >
                 </div>
-                <div class="flex space-x-2">
+
+                <div class="flex gap-2 w-full sm:w-auto">
+
+                    {{-- STATUS --}}
                     <select
-                        class="border dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg px-4 py-2">
-                        <option>Semua Status</option>
-                        <option>Belum Dibayar</option>
-                        <option>Sudah Dibayar</option>
-                        <option>Terlambat</option>
+                        name="status"
+                        class="border dark:border-gray-700 bg-white dark:bg-gray-800
+                            text-gray-900 dark:text-gray-100 rounded-lg px-4 py-2"
+                        onchange="this.form.submit()"
+                    >
+                        <option value="">Semua Status</option>
+                        <option value="unpaid" {{ request('status') == 'unpaid' ? 'selected' : '' }}>Belum Dibayar</option>
+                        <option value="paid" {{ request('status') == 'paid' ? 'selected' : '' }}>Sudah Dibayar</option>
+                        <option value="overdue" {{ request('status') == 'overdue' ? 'selected' : '' }}>Terlambat</option>
                     </select>
 
+                    {{-- STUDENT --}}
                     <select
-                        class="border dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg px-4 py-2">
-                        <option>Semua Siswa</option>
-                        <option>Siswa A</option>
-                        <option>Siswa B</option>
+                        name="student_id"
+                        class="border dark:border-gray-700 bg-white dark:bg-gray-800
+                            text-gray-900 dark:text-gray-100 rounded-lg px-4 py-2"
+                        onchange="this.form.submit()"
+                    >
+                        <option value="">Semua Siswa</option>
+                        @foreach ($students as $student)
+                            <option value="{{ $student->id }}"
+                                {{ request('student_id') == $student->id ? 'selected' : '' }}>
+                                {{ $student->name }}
+                            </option>
+                        @endforeach
                     </select>
+
                 </div>
-            </div>
+            </form>
 
             {{-- TABLE --}}
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg overflow-hidden">

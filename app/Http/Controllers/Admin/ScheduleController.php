@@ -14,11 +14,33 @@ class ScheduleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $schedules = Schedule::with(['class', 'subject', 'teacher'])->paginate(10);
-        return view('admin.schedules.index', compact('schedules'));
+        $query = Schedule::with(['class', 'subject', 'teacher']);
+
+        // Filter hari
+        if ($request->filled('day')) {
+            $query->where('day', $request->day);
+        }
+
+        // Filter kelas
+        if ($request->filled('class_id')) {
+            $query->where('class_id', $request->class_id);
+        }
+
+        // Search mata pelajaran
+        if ($request->filled('search')) {
+            $query->whereHas('subject', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $schedules = $query->paginate(10)->withQueryString();
+        $classes = SchoolClass::all();
+
+        return view('admin.schedules.index', compact('schedules', 'classes'));
     }
+
 
     /**
      * Show the form for creating a new resource.

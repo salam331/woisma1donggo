@@ -1,67 +1,128 @@
-<!-- Sidebar Parent (MerakiUI Style) -->
-<div
-  class="flex flex-col w-64 h-screen px-4 py-6 overflow-y-auto bg-white border-r dark:bg-gray-900 dark:border-gray-700">
+<aside
+    class="flex flex-col w-64 h-screen bg-white dark:bg-gray-900 border-r dark:border-gray-700 sticky top-0">
 
-  <div class="flex items-center space-x-2 mb-8">
-    <span class="text-xl font-bold text-primary">Parent Panel</span>
-  </div>
+    {{-- HEADER --}}
+    <div class="flex items-center px-6 py-6 border-b dark:border-gray-700">
+        <span class="text-lg font-bold text-gray-700 dark:text-gray-200">
+            Parent Panel
+        </span>
+    </div>
 
-  <nav class="space-y-1">
+    {{-- MENU --}}
+    <nav class="flex flex-col flex-1 py-4 space-y-1 overflow-y-auto">
 
-    <!-- Dashboard -->
-    <a href="{{ route('orang_tua.dashboard') }}"
-      class="flex items-center px-4 py-2 text-gray-700 transition-colors duration-200 rounded-lg hover:bg-gray-100 hover:text-primary dark:text-gray-300 dark:hover:bg-gray-800">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6" />
-      </svg>
-      Dashboard
-    </a>
+        {{-- ================= DASHBOARD ================= --}}
+        <a href="{{ route('orang_tua.dashboard') }}"
+           class="relative flex items-center px-4 py-2 space-x-3 rounded transition
+           {{ request()->routeIs('orang_tua.dashboard')
+                ? 'text-blue-600 font-semibold'
+                : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800' }}">
 
-    <!-- Student Detail -->
-    <a href="{{ url('/parent/student-detail') }}"
-      class="flex items-center px-4 py-2 text-gray-700 rounded-lg transition-colors duration-200 hover:bg-gray-100 hover:text-primary dark:text-gray-300 dark:hover:bg-gray-800">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M12 14l6.16-3.422a12.083 12.083 0 01.84 5.422H5a12.083 12.083 0 01.84-5.422L12 14z" />
-      </svg>
-      Student Detail
-    </a>
+            @if(request()->routeIs('orang_tua.dashboard'))
+                <span class="absolute left-0 h-full w-1 bg-blue-600 rounded"></span>
+            @endif
 
-    <!-- Invoices -->
-    <a href="{{ url('/parent/invoices') }}"
-      class="flex items-center px-4 py-2 text-gray-700 rounded-lg transition-colors duration-200 hover:bg-gray-100 hover:text-primary dark:text-gray-300 dark:hover:bg-gray-800">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M9 12h6m-6 4h6M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z" />
-      </svg>
-      Invoices
-    </a>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 12l9-9 9 9M4 10v10h6V14h4v6h6V10" />
+            </svg>
 
-    <!-- Attendances -->
-    <a href="{{ url('/parent/attendances') }}"
-      class="flex items-center px-4 py-2 text-gray-700 rounded-lg transition-colors duration-200 hover:bg-gray-100 hover:text-primary dark:text-gray-300 dark:hover:bg-gray-800">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 20 20" fill="currentColor">
-        <path
-          d="M6 2a1 1 0 00-1 1v1H3.5A1.5 1.5 0 002 5.5v11A1.5 1.5 0 003.5 18h13a1.5 1.5 0 001.5-1.5v-11A1.5 1.5 0 0016.5 4H15V3a1 1 0 00-1-1H6zm8 4v2H6V6h8z" />
-      </svg>
-      Attendances
-    </a>
+            <span>Dashboard</span>
+        </a>
 
-    <!-- Announcements -->
-    <a href="{{ url('/parent/announcements') }}"
-      class="flex items-center px-4 py-2 text-gray-700 rounded-lg transition-colors duration-200 hover:bg-gray-100 hover:text-primary dark:text-gray-300 dark:hover:bg-gray-800">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-      </svg>
-      Announcements
-    </a>
+        {{-- ================= PENGUMUMAN ================= --}}
+        <a href="{{ url('/orang_tua/announcements') }}"
+           class="relative flex items-center px-4 py-2 space-x-3 rounded transition
+           {{ request()->is('orang_tua/announcements*')
+                ? 'text-blue-600 font-semibold'
+                : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800' }}">
 
-  </nav>
+            @if(request()->is('orang_tua/announcements*'))
+                <span class="absolute left-0 h-full w-1 bg-blue-600 rounded"></span>
+            @endif
 
-</div>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 5l7 7-7 7" />
+            </svg>
+
+            <span>Pengumuman</span>
+        </a>
+
+        {{-- ================= INFORMASI ANAK (DROPDOWN) ================= --}}
+        <div x-data="{ open: false }" class="mt-2">
+
+            {{-- HEADER DROPDOWN --}}
+            <button @click="open = !open"
+                class="w-full flex items-center justify-between px-4 py-2 text-gray-700 dark:text-gray-300
+                       hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition">
+
+                <div class="flex items-center space-x-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M17 20h5V10H2v10h5m10 0V4a2 2 0 00-2-2H9a2 2 0 00-2 2v16" />
+                    </svg>
+                    <span class="font-medium">Informasi Anak</span>
+                </div>
+
+                <svg class="w-4 h-4 transform transition"
+                     :class="open ? 'rotate-180' : ''"
+                     fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+
+            {{-- ISI DROPDOWN --}}
+            <div x-show="open" x-transition class="mt-1 space-y-1 pl-6">
+
+                @if(auth()->user()->parent && auth()->user()->parent->students->count() > 0)
+
+                    @foreach(auth()->user()->parent->students as $child)
+
+                        {{-- NAMA ANAK --}}
+                        <div class="text-sm text-gray-500 font-semibold mt-3">
+                            {{ $child->user->name }}
+                        </div>
+
+                        {{-- DETAIL --}}
+                        <a href="{{ url('/orang_tua/child/detail', $child->id) }}"
+                           class="relative flex items-center px-3 py-2 rounded text-sm transition
+                           {{ request()->routeIs('parent.child.detail') && request()->route('childId') == $child->id
+                                ? 'text-blue-600 font-semibold'
+                                : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800' }}">
+                            Detail Anak
+                        </a>
+
+                        {{-- KEHADIRAN --}}
+                        <a href="{{ url('/orang_tua/child/attendance', $child->id) }}"
+                           class="relative flex items-center px-3 py-2 rounded text-sm transition
+                           {{ request()->routeIs('parent.child.attendance') && request()->route('childId') == $child->id
+                                ? 'text-blue-600 font-semibold'
+                                : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800' }}">
+                            Kehadiran
+                        </a>
+
+                        {{-- TAGIHAN --}}
+                        <a href="{{ url('/orang_tua/child/invoices', $child->id) }}"
+                           class="relative flex items-center px-3 py-2 rounded text-sm transition
+                           {{ request()->routeIs('parent.child.invoices') && request()->route('childId') == $child->id
+                                ? 'text-blue-600 font-semibold'
+                                : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800' }}">
+                            Tagihan
+                        </a>
+
+                    @endforeach
+
+                @else
+                    {{-- KONDISI ELSE --}}
+                    <div class="px-3 py-2 text-sm text-gray-400 italic">
+                        Belum ada data anak terdaftar
+                    </div>
+                @endif
+
+            </div>
+        </div>
+
+    </nav>
+</aside>

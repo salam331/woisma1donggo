@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@yield('title', 'Sistem Administrasi SMAN 1 Donggo')</title>
-    <link rel="icon" href="{{ asset('faviconn.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('faviconn2.ico') }}" type="image/x-icon">
     @vite('resources/css/app.css')
     <script src="//unpkg.com/alpinejs" defer></script>
     <link rel="stylesheet" href="{{ asset('csss/mobile-table.css') }}">
@@ -21,6 +21,9 @@
 </style>
 </head>
 <body class="h-full">
+    {{-- Toast Notification --}}
+    <x-toast />
+    
     <div class="min-h-full flex">
             {{-- buatkan jika login sebagai role lain maka akan include sidebar sesuai role yang ada--}}
             @if(Auth::check())

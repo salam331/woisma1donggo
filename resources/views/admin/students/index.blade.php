@@ -182,27 +182,55 @@
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-2">
 
             {{-- Search & Filter --}}
-            <div class="mb-6 flex flex-col sm:flex-row justify-between items-center">
-                <div class="mb-4 sm:mb-0 w-full sm:w-auto">
-                    <input type="text" placeholder="Cari siswa..."
-                        class="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-64">
-                </div>
+            <form method="GET"
+      class="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
 
-                <div class="flex space-x-2">
-                    <select class="border border-gray-300 rounded-lg px-4 py-2">
-                        <option>Semua Gender</option>
-                        <option>Laki-laki</option>
-                        <option>Perempuan</option>
-                    </select>
+    {{-- SEARCH --}}
+    <div class="w-full sm:w-auto">
+        <input
+            type="text"
+            name="search"
+            value="{{ request('search') }}"
+            placeholder="Cari siswa..."
+            class="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-64"
+            {{-- oninput="this.form.submit()" --}}
+        >
+    </div>
 
-                    <select class="border border-gray-300 rounded-lg px-4 py-2">
-                        <option>Semua Kelas</option>
-                        <option>Kelas 1</option>
-                        <option>Kelas 2</option>
-                        <option>Kelas 3</option>
-                    </select>
-                </div>
-            </div>
+    {{-- FILTER --}}
+    <div class="flex flex-wrap gap-2">
+
+        <select
+            name="gender"
+            class="border border-gray-300 rounded-lg px-4 py-2"
+            onchange="this.form.submit()"
+        >
+            <option value="">Semua Gender</option>
+            <option value="male" {{ request('gender') == 'male' ? 'selected' : '' }}>
+                Laki-laki
+            </option>
+            <option value="female" {{ request('gender') == 'female' ? 'selected' : '' }}>
+                Perempuan
+            </option>
+        </select>
+
+        <select
+            name="school_class_id"
+            class="border border-gray-300 rounded-lg px-4 py-2"
+            onchange="this.form.submit()"
+        >
+            <option value="">Semua Kelas</option>
+            @foreach ($classes as $class)
+                <option value="{{ $class->id }}"
+                    {{ request('school_class_id') == $class->id ? 'selected' : '' }}>
+                    {{ $class->name }}
+                </option>
+            @endforeach
+        </select>
+
+    </div>
+</form>
+
 
             {{-- Students Table --}}
             <div class="overflow-x-auto">

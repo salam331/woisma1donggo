@@ -182,25 +182,53 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg">
                 <div class="p-2">
                     <!-- Search and Filter -->
-                    <div class="mb-6 flex flex-col sm:flex-row justify-between items-center">
-                        <div class="mb-4 sm:mb-0">
-                            <input type="text" placeholder="Cari guru..."
-                                class="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-64">
+                    <form method="GET" action="{{ route('admin.teachers.index') }}">
+                        <div class="mb-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+
+                            {{-- Search --}}
+                            <input
+                                type="text"
+                                name="search"
+                                value="{{ request('search') }}"
+                                placeholder="Cari guru..."
+                                class="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-64"
+                            >
+
+                            <div class="flex space-x-2">
+
+                                {{-- Gender --}}
+                                <select
+                                    name="gender"
+                                    onchange="this.form.submit()"
+                                    class="border border-gray-300 rounded-lg px-4 py-2"
+                                >
+                                    <option value="">Semua Gender</option>
+                                    <option value="male" {{ request('gender') == 'male' ? 'selected' : '' }}>
+                                        Laki-laki
+                                    </option>
+                                    <option value="female" {{ request('gender') == 'female' ? 'selected' : '' }}>
+                                        Perempuan
+                                    </option>
+                                </select>
+
+                                {{-- Mapel --}}
+                                <select name="subject"
+                                        onchange="this.form.submit()"
+                                        class="border border-gray-300 rounded-lg px-4 py-2">
+                                    <option value="">Semua Mapel</option>
+
+                                    @foreach ($subjects as $item)
+                                        <option value="{{ $item }}"
+                                            {{ request('subject') == $item ? 'selected' : '' }}>
+                                            {{ $item }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+
+                            </div>
                         </div>
-                        <div class="flex space-x-2">
-                            <select class="border border-gray-300 rounded-lg px-4 py-2">
-                                <option>Semua Gender</option>
-                                <option>Laki-laki</option>
-                                <option>Perempuan</option>
-                            </select>
-                            <select class="border border-gray-300 rounded-lg px-4 py-2">
-                                <option>Semua Mapel</option>
-                                <option>Matematika</option>
-                                <option>Bahasa Indonesia</option>
-                                <option>Bahasa Inggris</option>
-                            </select>
-                        </div>
-                    </div>
+                    </form>
 
                     <!-- Teachers Table -->
                     <div class="overflow-x-auto">

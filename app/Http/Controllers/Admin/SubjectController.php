@@ -12,11 +12,31 @@ class SubjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $subjects = Subject::with('teacher')->paginate(10);
-        return view('admin.subjects.index', compact('subjects'));
+        $query = Subject::with('teacher');
+
+        // SEARCH: kode atau nama mata pelajaran
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('code', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // FILTER GURU
+        if ($request->filled('teacher_id')) {
+            $query->where('teacher_id', $request->teacher_id);
+        }
+
+        $subjects = $query->paginate(10)->withQueryString();
+
+        // ambil semua guru untuk dropdown filter
+        $teachers = Teacher::orderBy('name')->get();
+
+        return view('admin.subjects.index', compact('subjects', 'teachers'));
     }
+
 
     /**
      * Show the form for creating a new resource.

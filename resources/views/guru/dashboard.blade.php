@@ -44,12 +44,8 @@
                             <p class="text-sm mt-1">Jumlah Kelas</p>
                         </div>
                         <div class="bg-green-500 text-white p-5 rounded-lg shadow text-center">
-                            <h3 class="text-xl font-bold">{{ $students_count ?? 0 }}</h3>
-                            <p class="text-sm mt-1">Jumlah Siswa</p>
-                        </div>
-                        <div class="bg-yellow-500 text-white p-5 rounded-lg shadow text-center">
-                            <h3 class="text-xl font-bold">{{ $tasks_to_review ?? 0 }}</h3>
-                            <p class="text-sm mt-1">Tugas Perlu Dikoreksi</p>
+                            <h3 class="text-xl font-bold">{{ $exams_count ?? 0 }}</h3>
+                            <p class="text-sm mt-1">Jumlah Ujian</p>
                         </div>
                         <div class="bg-purple-500 text-white p-5 rounded-lg shadow text-center">
                             <h3 class="text-xl font-bold">{{ $materials_uploaded ?? 0 }}</h3>
@@ -72,7 +68,7 @@
                         <ul class="space-y-2 text-gray-700 text-sm">
                             @foreach($today_schedule as $schedule)
                                 <li class="flex justify-between items-center bg-gray-50 rounded-lg p-3">
-                                    <span>{{ $schedule->subject->name }} ({{ $schedule->start_time }} - {{ $schedule->end_time }})</span>
+                                    <span>{{ $schedule->subject->name }} <br> ({{ $schedule->start_time->format('H:i') }} - {{ $schedule->end_time->format('H:i') }})</span>
                                     <span class="text-xs text-gray-500">{{ $schedule->class->name }}</span>
                                 </li>
                             @endforeach
@@ -80,10 +76,11 @@
                     @else
                         <p class="text-xs text-gray-500 text-center">Tidak ada jadwal hari ini</p>
                     @endif
+                    <a href="{{ route('guru.schedules.index') }}" class="block text-center mt-2 text-xs text-blue-600 hover:underline">Lihat Semua Jadwal</a>
                 </div>
 
                 <!-- Statistik Kehadiran Kelas -->
-                <div class="bg-white shadow-sm rounded-lg p-6">
+                {{-- <div class="bg-white shadow-sm rounded-lg p-6">
                     <h3 class="text-sm font-semibold text-gray-700 mb-3">
                         Statistik Kehadiran
                     </h3>
@@ -105,7 +102,7 @@
                             <div class="text-xs text-gray-600">Tidak Hadir</div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Tips Mengajar -->
                 <div class="bg-white shadow-sm rounded-lg p-6">

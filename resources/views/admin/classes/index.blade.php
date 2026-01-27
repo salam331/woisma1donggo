@@ -183,27 +183,56 @@
     <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6">
             <!-- Search and Filter -->
-            <div class="mb-6 flex flex-col sm:flex-row justify-between items-center">
-                <div class="mb-4 sm:mb-0">
-                    <input type="text" placeholder="Cari kelas..." class="border border-gray-300 dark:border-gray-700 dark:bg-gray-900
-                                   rounded-lg px-4 py-2 w-full sm:w-64">
-                </div>
+            <form method="GET" action="{{ route('admin.classes.index') }}"
+                class="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+
+                {{-- SEARCH --}}
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ request('search') }}"
+                    placeholder="Cari Nama Kelas atau Wali..."
+                    {{-- oninput="this.form.submit()" --}}
+                    class="border border-gray-300 dark:border-gray-700 dark:bg-gray-900
+                        rounded-lg px-4 py-2 w-full sm:w-64"
+                >
 
                 <div class="flex space-x-2">
-                    <select class="border border-gray-300 dark:border-gray-700 dark:bg-gray-900 rounded-lg px-4 py-2">
-                        <option>Semua Tingkat</option>
-                        <option>Kelas 1</option>
-                        <option>Kelas 2</option>
-                        <option>Kelas 3</option>
+
+                    {{-- FILTER TINGKAT --}}
+                    <select
+                        name="grade_level"
+                        onchange="this.form.submit()"
+                        class="border border-gray-300 dark:border-gray-700 dark:bg-gray-900
+                            rounded-lg px-4 py-2"
+                    >
+                        <option value="">Semua Tingkat</option>
+                        @foreach ($gradeLevels as $level)
+                            <option value="{{ $level }}"
+                                {{ request('grade_level') == $level ? 'selected' : '' }}>
+                                {{ $level }}
+                            </option>
+                        @endforeach
                     </select>
 
-                    <select class="border border-gray-300 dark:border-gray-700 dark:bg-gray-900 rounded-lg px-4 py-2">
-                        <option>Semua Wali Kelas</option>
-                        <option>Ada Wali Kelas</option>
-                        <option>Tanpa Wali Kelas</option>
+                    {{-- FILTER WALI KELAS --}}
+                    <select
+                        name="teacher"
+                        onchange="this.form.submit()"
+                        class="border border-gray-300 dark:border-gray-700 dark:bg-gray-900
+                            rounded-lg px-4 py-2"
+                    >
+                        <option value="">Semua Wali Kelas</option>
+                        <option value="with" {{ request('teacher') === 'with' ? 'selected' : '' }}>
+                            Ada Wali Kelas
+                        </option>
+                        <option value="without" {{ request('teacher') === 'without' ? 'selected' : '' }}>
+                            Tanpa Wali Kelas
+                        </option>
                     </select>
+
                 </div>
-            </div>
+            </form>
 
             <!-- Classes Table -->
             <div class="overflow-x-auto">

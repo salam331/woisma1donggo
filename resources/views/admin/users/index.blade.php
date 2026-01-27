@@ -183,22 +183,40 @@
     <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg">
         <div class="p-2">
             <!-- Search & Filter -->
-            <div class="mb-6 flex flex-col sm:flex-row justify-between items-center">
-                <div class="mb-4 sm:mb-0">
-                    <input type="text" placeholder="Cari pengguna..."
-                        class="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-64 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
+            <form method="GET" action="{{ route('admin.users.index') }}">
+                <div class="mb-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+
+                    {{-- Search Input --}}
+                    <div class="w-full sm:w-auto">
+                        <input
+                            type="text"
+                            name="search"
+                            value="{{ request('search') }}"
+                            placeholder="Cari pengguna..."
+                            class="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-64
+                                dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200
+                                focus:ring focus:ring-indigo-300"
+                        >
+                    </div>
+
+                    {{-- Role Filter --}}
+                    <div class="flex space-x-2 w-full sm:w-auto">
+                        <select
+                            name="role"
+                            onchange="this.form.submit()"
+                            class="border border-gray-300 rounded-lg px-4 py-2
+                                dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                        >
+                            <option value="">Semua Role</option>
+                            <option value="Admin" {{ request('role') == 'Admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="Guru" {{ request('role') == 'Guru' ? 'selected' : '' }}>Guru</option>
+                            <option value="Siswa" {{ request('role') == 'Siswa' ? 'selected' : '' }}>Siswa</option>
+                            <option value="Orang_Tua" {{ request('role') == 'Orang_Tua' ? 'selected' : '' }}>Orang Tua</option>
+                        </select>
+                    </div>
+
                 </div>
-                <div class="flex space-x-2">
-                    <select
-                        class="border border-gray-300 rounded-lg px-4 py-2 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
-                        <option>Semua Role</option>
-                        <option>Admin</option>
-                        <option>Guru</option>
-                        <option>Siswa</option>
-                        <option>Orang Tua</option>
-                    </select>
-                </div>
-            </div>
+            </form>
 
             <!-- Users Table -->
             <div class="overflow-x-auto">

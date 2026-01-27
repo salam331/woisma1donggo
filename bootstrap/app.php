@@ -15,6 +15,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+            'convert.session.toast' => \App\Http\Middleware\ConvertSessionToToast::class,
+        ]);
+        
+        // Apply the toast middleware to all web routes
+        $middleware->web(append: [
+            \App\Http\Middleware\ConvertSessionToToast::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

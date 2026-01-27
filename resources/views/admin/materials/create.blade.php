@@ -9,18 +9,6 @@
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto p-6">
             <div class="max-w-4xl mx-auto">
-                @if(session('success'))
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                @if(session('error'))
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-                        {{ session('error') }}
-                    </div>
-                @endif
-
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border dark:border-gray-700 p-6">
                     <form method="POST" action="{{ route('admin.materials.store') }}" enctype="multipart/form-data" id="materialForm">
                         @csrf

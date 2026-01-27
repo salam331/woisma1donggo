@@ -20,6 +20,7 @@ use App\Http\Controllers\Teacher\SubjectController as TeacherSubjectController;
 use App\Http\Controllers\Teacher\AnnouncementController as TeacherAnnouncementController;
 use App\Http\Controllers\Teacher\GradeController as TeacherGradeController;
 use App\Http\Controllers\Teacher\ExamController as TeacherExamController;
+use App\Http\Controllers\Teacher\DashboardController as TeacherDashboardController;
 
 // Student Controllers
 use App\Http\Controllers\Student\ScheduleController as StudentScheduleController;
@@ -194,7 +195,8 @@ Route::middleware(['auth', 'role:guru'])
     ->name('guru.')
     ->group(function () {
 
-    Route::get('/dashboard', fn() => view('guru.dashboard'))->name('dashboard');
+    // Route::get('/dashboard', fn() => view('guru.dashboard'))->name('dashboard');
+    Route::get('/dashboard', [TeacherDashboardController::class, 'index'])->name('dashboard');
 
 
 

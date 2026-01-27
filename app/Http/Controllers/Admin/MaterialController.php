@@ -16,14 +16,36 @@ class MaterialController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $materials = Material::with(['subject', 'teacher', 'class'])->paginate(10);
-        $subjects = Subject::all();
-        $teachers = Teacher::all();
-        $classes = SchoolClass::all();
-        return view('admin.materials.index', compact('materials', 'subjects', 'teachers', 'classes'));
+        $query = Material::with(['subject', 'teacher', 'class']);
+
+        // SEARCH JUDUL MATERI
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        // FILTER MATA PELAJARAN
+        if ($request->filled('subject_id')) {
+            $query->where('subject_id', $request->subject_id);
+        }
+
+        // FILTER KELAS
+        if ($request->filled('class_id')) {
+            $query->where('class_id', $request->class_id);
+        }
+
+        $materials = $query->paginate(10)->withQueryString();
+
+        $subjects = Subject::orderBy('name')->get();
+        $teachers = Teacher::orderBy('name')->get();
+        $classes  = SchoolClass::orderBy('name')->get();
+
+        return view('admin.materials.index', compact(
+            'materials', 'subjects', 'teachers', 'classes'
+        ));
     }
+
 
     /**
      * Show the form for creating a new resource.

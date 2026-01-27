@@ -16,19 +16,39 @@ class InvoiceController extends Controller
     {
         $query = Invoice::with('student');
 
-        if ($request->has('status') && $request->status) {
+        // 🔍 Search (invoice number, student name, NIS)
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('invoice_number', 'like', "%{$search}%")
+                ->orWhereHas('student', function ($s) use ($search) {
+                    $s->where('name', 'like', "%{$search}%")
+                        ->orWhere('nis', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        // 📌 Filter Status
+        if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
-        if ($request->has('student_id') && $request->student_id) {
+        // 👤 Filter Student
+        if ($request->filled('student_id')) {
             $query->where('student_id', $request->student_id);
         }
 
-        $invoices = $query->paginate(10);
-        $students = Student::all();
+        $invoices = $query
+            ->latest()
+            ->paginate(10)
+            ->withQueryString(); // ⭐ penting agar filter tidak hilang saat pagination
+
+        $students = Student::orderBy('name')->get();
 
         return view('admin.invoices.index', compact('invoices', 'students'));
     }
+
 
     /**
      * Show the form for creating a new resource.
