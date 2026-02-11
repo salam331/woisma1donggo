@@ -11,7 +11,7 @@
 @section('content')
 
     {{-- HERO SECTION --}}
-    <div class="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16 mb-10 shadow-lg">
+    <div class="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16 mb-10 shadow-lg mt-24">
         <div class="max-w-7xl mx-auto px-6 flex items-center space-x-6">
             @if($profile->logo)
                 <img src="{{ asset('storage/' . $profile->logo) }}"

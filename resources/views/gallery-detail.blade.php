@@ -14,7 +14,7 @@
 @endsection
 
 @section('content')
-<div class="py-12" x-data="{ open: false, imgSrc: '', imgName: '' }">
+<div class="py-12 mt-20" x-data="{ open: false, imgSrc: '', imgName: '' }">
     <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
 
         <!-- Card -->

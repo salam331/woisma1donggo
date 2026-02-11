@@ -1,5 +1,5 @@
 {{-- buatkan agar header ini berhenti saat di scrol --}}
-<header x-data="{ isOpen: false }" class="relative bg-white shadow dark:bg-gray-800 sticky top-0 z-50">
+<header x-data="{ isOpen: false }" class="fixed top-0 left-0 w-full bg-white dark:bg-gray-800 shadow z-[9999]">
     <div class="container px-6 py-8 mx-auto flex items-center justify-between">
 
         <!-- Logo / Title -->

@@ -4,7 +4,7 @@
 
   <!-- HERO SECTION -->
   <section
-    class="relative bg-gradient-to-br from-blue-600 to-blue-400 dark:from-gray-900 dark:to-gray-800 py-24 px-6 overflow-hidden">
+    class="relative bg-gradient-to-br from-blue-600 to-blue-400 dark:from-gray-900 dark:to-gray-800 py-24 px-6 overflow-hidden mt-24">
     <div class="absolute inset-0 opacity-20 bg-cover bg-center"
       style="background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200');"></div>
 

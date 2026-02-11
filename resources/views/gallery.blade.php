@@ -9,7 +9,7 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 px-6 shadow-lg">
+<section class="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 px-6 shadow-lg mt-24">
     <div class="max-w-7xl mx-auto text-center">
         <h1 class="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow">
             Galeri SMAN 1 Donggo
