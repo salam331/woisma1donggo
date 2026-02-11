@@ -1,3 +1,5 @@
+KEGAGALAN TERBESAR ADALAH MENGIKHLASKAN CINTA YANG TELAH KITA BANGUN
+
 ✅ SISTEM ADMINISTRASI SMAN 1 DONGGO
 Teknologi utama:
 •	Blade Components
@@ -252,6 +254,4 @@ Minta AI menghasilkan seluruh hal berikut secara lengkap:
 19. Invoice siswa & orang tua
 20. Kontakt form yang menyimpan ke tabel contact_messages
 ________________________________________
-🟦 PROMPT PENUTUP
-Bangunkan seluruh Sistem Administrasi SMAN 1 DONGGO sesuai semua detail di atas. Berikan kode lengkap, struktur file, Blade, controller, routing, database, desain UI MerakiUI, dan pastikan website responsif untuk desktop dan mobile. Buatkan semuanya secara rapi, modular, dan lengkap.
 
