@@ -121,7 +121,7 @@
 
 
             <!-- Parents -->
-            <a href="{{ route('admin.parents.index') }}" class="relative flex items-center space-x-3 px-3 py-2 rounded transition duration-200
+            {{-- <a href="{{ route('admin.parents.index') }}" class="relative flex items-center space-x-3 px-3 py-2 rounded transition duration-200
         {{ request()->is('admin/parents*')
     ? 'text-blue-600 dark:text-blue-400 font-semibold'
     : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800' }}">
@@ -136,7 +136,7 @@
                 </svg>
 
                 <span x-show="open" class="transition-opacity duration-300">Daftar Ortu</span>
-            </a>
+            </a> --}}
 
 
             <!-- Classes -->

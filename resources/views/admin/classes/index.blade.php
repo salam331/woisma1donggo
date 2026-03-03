@@ -230,6 +230,12 @@
                             Tanpa Wali Kelas
                         </option>
                     </select>
+                    <div class="flex space-x-2">
+                        <a href="{{ route('admin.classes.create') }}"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Tambah Kelas
+                        </a>
+                    </div>
 
                 </div>
             </form>

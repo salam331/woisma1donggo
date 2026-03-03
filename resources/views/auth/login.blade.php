@@ -123,7 +123,7 @@
                 Belum punya akun?
                 <a href="{{ route('register') }}"
                     class="text-blue-600 font-semibold hover:underline">
-                    Daftar sekarang
+                    Hubungi Admin
                 </a>
             </div>
             @endif

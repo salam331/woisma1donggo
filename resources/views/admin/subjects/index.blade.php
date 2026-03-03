@@ -184,7 +184,7 @@
 
         <!-- Search & Filter -->
         <form method="GET" action="{{ route('admin.subjects.index') }}"
-            class="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+            class="mb-6 flex flex-col sm:flex-row justify-end items-center gap-4">
 
             {{-- SEARCH --}}
             <input
@@ -212,6 +212,12 @@
                     </option>
                 @endforeach
             </select>
+            <div class="flex space-x-2">
+                <a href="{{ route('admin.subjects.create') }}"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Tambah Mapel
+                </a>
+            </div>
 
         </form>
 

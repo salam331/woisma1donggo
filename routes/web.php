@@ -7,6 +7,7 @@ use App\Http\Controllers\SchoolProfilePublicController;
 use App\Http\Controllers\AnnouncementPublicController;
 use App\Http\Controllers\GalleryPublicController;
 use App\Http\Controllers\ContactFormController;
+use App\Http\Controllers\DashboardPublicController;
 
 // Profile Controller
 use App\Http\Controllers\ProfileController;
@@ -54,9 +55,7 @@ use App\Http\Controllers\Admin\ExamController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-    return view('dashboard', ['layout' => 'publik']);
-})->name('dashboard');
+Route::get('/', [DashboardPublicController::class, 'index'])->name('dashboard');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

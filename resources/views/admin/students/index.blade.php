@@ -227,6 +227,12 @@
                 </option>
             @endforeach
         </select>
+        <div class="flex space-x-2">
+            <a href="{{ route('admin.students.create') }}"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Tambah Siswa
+            </a>
+        </div>
 
     </div>
 </form>
@@ -252,9 +258,9 @@
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                 Gender</th>
-                            <th
+                            {{-- <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                Orang Tua</th>
+                                Orang Tua</th> --}}
                             <th
                                 class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                 Aksi</th>
@@ -305,10 +311,10 @@
                                                 </span>
                                             </td>
 
-                                            <td data-label="Orang Tua"
+                                            {{-- <td data-label="Orang Tua"
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                                 {{ $student->parent->name ?? '-' }}
-                                            </td>
+                                            </td> --}}
 
                                             <td data-label="Aksi" class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div class="flex items-center justify-center gap-x-4">

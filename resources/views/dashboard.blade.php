@@ -21,9 +21,7 @@
             SMAN 1 Donggo
         </h1>
 
-        <p class="mt-8 text-xl md:text-2xl opacity-90">
-            Solusi digital modern untuk manajemen akademik sekolah yang cepat dan terintegrasi.
-        </p>
+        <p class="mt-8 text-xl md:text-2xl opacity-90">Sistem informasi akademik yang mempermudah manajemen data siswa, guru, dan kegiatan akademik.</p>
 
         <a href="{{ route('about') }}"
            class="mt-10 inline-flex items-center gap-3 bg-white text-indigo-700
@@ -102,18 +100,13 @@
         <h2 class="text-3xl font-bold mb-12 text-primary">Statistik Sekolah</h2>
 
         <div class="grid md:grid-cols-4 gap-8">
-            @foreach([
-                ['Siswa Aktif',850],
-                ['Guru & Staff',65],
-                ['Kelas',28],
-                ['Prestasi',120],
-            ] as $s)
+            @foreach($statistics as $stat)
             <div class="bg-white/80 backdrop-blur dark:bg-gray-800
                         p-8 rounded-2xl shadow-lg
                         hover:-translate-y-2 hover:shadow-2xl
                         transition-all duration-300">
-                <p class="text-5xl font-extrabold text-primary mb-3">{{ $s[1] }}</p>
-                <p class="text-gray-600 dark:text-gray-300 text-lg">{{ $s[0] }}</p>
+                <p class="text-5xl font-extrabold text-primary mb-3">{{ $stat['count'] }}</p>
+                <p class="text-gray-600 dark:text-gray-300 text-lg">{{ $stat['label'] }}</p>
             </div>
             @endforeach
         </div>
