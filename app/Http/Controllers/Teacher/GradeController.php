@@ -194,13 +194,20 @@ class GradeController extends Controller
 
         foreach ($request->grades as $gradeData) {
             if ($gradeData['score'] !== null && $gradeData['score'] !== '') {
+                $score = (float) $gradeData['score'];
+                
+                // Calculate letter grade based on score
+                $gradeLetter = $this->calculateGradeLetter($score);
+
                 Grade::updateOrCreate(
                     [
                         'exam_id' => $examId,
                         'student_id' => $gradeData['student_id'],
                     ],
                     [
-                        'score' => $gradeData['score'],
+                        'subject_id' => $exam->subject_id,
+                        'score' => $score,
+                        'grade_letter' => $gradeLetter,
                     ]
                 );
             } else {
@@ -213,6 +220,18 @@ class GradeController extends Controller
 
         return redirect()->route('guru.grades.exam', [$classId, $subjectId, $examId])
             ->with('success', 'Nilai berhasil diperbarui.');
+    }
+
+    /**
+     * Calculate letter grade based on numeric score.
+     */
+    private function calculateGradeLetter(float $score): string
+    {
+        if ($score >= 90) return 'A';
+        if ($score >= 80) return 'B';
+        if ($score >= 70) return 'C';
+        if ($score >= 60) return 'D';
+        return 'E';
     }
 
     /**
