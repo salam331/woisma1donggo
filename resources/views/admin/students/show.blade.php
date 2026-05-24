@@ -109,9 +109,10 @@
                                 <div>
                                     <dt class="text-sm font-medium text-gray-500">Orang Tua</dt>
                                     <dd class="mt-1 text-sm text-gray-900 dark:text-gray-200">
-                                        {{ $student->parent->name ?? '-' }}
+                                        -
                                     </dd>
                                 </div>
+
 
                             </dl>
                         </div>

@@ -33,13 +33,26 @@ class DashboardController extends Controller
                 // Tambahkan status jadwal (opsional tapi sangat berguna)
                 $currentTime = $now->format('H:i');
 
-                if ($currentTime < $schedule->start_time->format('H:i')) {
+                $start = $schedule->start_time;
+                $end = $schedule->end_time;
+
+                // Aman jika cast belum terpasang/kolom adalah string
+                $startTime = is_object($start) && method_exists($start, 'format')
+                    ? $start->format('H:i')
+                    : Carbon::parse($start)->format('H:i');
+
+                $endTime = is_object($end) && method_exists($end, 'format')
+                    ? $end->format('H:i')
+                    : Carbon::parse($end)->format('H:i');
+
+                if ($currentTime < $startTime) {
                     $schedule->status = 'akan_datang';
-                } elseif ($currentTime > $schedule->end_time->format('H:i')) {
+                } elseif ($currentTime > $endTime) {
                     $schedule->status = 'selesai';
                 } else {
                     $schedule->status = 'berlangsung';
                 }
+
 
                 return $schedule;
             });

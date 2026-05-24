@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Student;
 use App\Models\SchoolClass;
-use App\Models\ParentModel;
 use App\Models\User;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+
+// Catatan: relasi orang tua dihapus (tanpa tabel parents & kolom parent_id)
+
 
 class StudentController extends Controller
 {
@@ -18,7 +21,7 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Student::with(['class', 'parent']);
+        $query = Student::with(['class']);
 
         // SEARCH (nama / NIS)
         if ($request->filled('search')) {
@@ -51,8 +54,7 @@ class StudentController extends Controller
     public function create()
     {
         $classes = SchoolClass::all();
-        $parents = ParentModel::all();
-        return view('admin.students.create', compact('classes', 'parents'));
+        return view('admin.students.create', compact('classes'));
     }
 
     /**
@@ -69,8 +71,7 @@ class StudentController extends Controller
             'address' => 'nullable|string',
             'birth_date' => 'nullable|date',
             'gender' => 'required|in:male,female',
-            'class_id' => 'required|exists:classes,id',
-            'parent_id' => 'required|exists:parents,id',
+            'school_class_id' => 'required|exists:classes,id',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -84,7 +85,7 @@ class StudentController extends Controller
         // Assign role 'siswa' to the user
         $user->assignRole('siswa');
 
-        $data = $request->all();
+        $data = $request->except('parent_id');
         $data['user_id'] = $user->id;
 
         if ($request->hasFile('photo')) {
@@ -101,7 +102,7 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        $student->load(['class', 'parent']);
+        $student->load(['class']);
         return view('admin.students.show', compact('student'));
     }
 
@@ -111,8 +112,7 @@ class StudentController extends Controller
     public function edit(Student $student)
     {
         $classes = SchoolClass::all();
-        $parents = ParentModel::all();
-        return view('admin.students.edit', compact('student', 'classes', 'parents'));
+        return view('admin.students.edit', compact('student', 'classes'));
     }
 
     /**
@@ -129,11 +129,11 @@ class StudentController extends Controller
             'birth_date' => 'nullable|date',
             'gender' => 'required|in:male,female',
             'school_class_id' => 'required|exists:classes,id',
-            'parent_id' => 'required|exists:parents,id',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $data = $request->all();
+        $data = $request->except('parent_id');
+
 
         if ($request->hasFile('photo')) {
             if ($student->photo) {

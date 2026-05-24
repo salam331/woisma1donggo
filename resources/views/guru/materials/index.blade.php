@@ -8,7 +8,7 @@
 
     <div class="flex-1 flex flex-col overflow-hidden">
         <!-- Header -->
-        {{-- <header class="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700">
+        <header class="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700">
             <div class="px-6 py-4">
                 <div class="flex items-center justify-between">
                     <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Materi Pembelajaran</h1>
@@ -18,7 +18,7 @@
                     </a>
                 </div>
             </div>
-        </header> --}}
+        </header>
 
         <!-- Main Content -->
         

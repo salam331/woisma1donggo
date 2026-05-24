@@ -120,22 +120,7 @@
                                 @enderror
                             </div>
 
-                            {{-- Parent --}}
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Orang Tua</label>
-                                <select id="parent_id" name="parent_id" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700
-                                                   rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                    <option value="">Pilih Orang Tua</option>
-                                    @foreach($parents as $parent)
-                                        <option value="{{ $parent->id }}" {{ old('parent_id', $student->parent_id) == $parent->id ? 'selected' : '' }}>
-                                            {{ $parent->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('parent_id')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
+
 
                             {{-- Current Photo --}}
                             @if($student->photo)

@@ -17,9 +17,11 @@ class Schedule extends Model
     ];
 
     protected $casts = [
+        // Gunakan cast waktu agar ->format() tidak error
         'start_time' => 'datetime:H:i',
         'end_time' => 'datetime:H:i',
     ];
+
 
     public function class(): BelongsTo
     {
@@ -31,21 +33,21 @@ class Schedule extends Model
         return $this->belongsTo(Subject::class);
     }
 
-    public function getDayIndoAttribute()
-{
-    return [
-        'monday'    => 'Senin',
-        'tuesday'   => 'Selasa',
-        'wednesday' => 'Rabu',
-        'thursday'  => 'Kamis',
-        'friday'    => 'Jumat',
-        'saturday'  => 'Sabtu',
-        'sunday'    => 'Minggu',
-    ][strtolower($this->day)] ?? '-';
-}
-
     public function teacher(): BelongsTo
     {
         return $this->belongsTo(Teacher::class);
+    }
+
+    public function getDayIndoAttribute()
+    {
+        return [
+            'monday'    => 'Senin',
+            'tuesday'   => 'Selasa',
+            'wednesday' => 'Rabu',
+            'thursday'  => 'Kamis',
+            'friday'    => 'Jumat',
+            'saturday'  => 'Sabtu',
+            'sunday'    => 'Minggu',
+        ][strtolower($this->day)] ?? '-';
     }
 }

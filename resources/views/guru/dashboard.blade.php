@@ -68,7 +68,16 @@
                         <ul class="space-y-2 text-gray-700 text-sm">
                             @foreach($today_schedule as $schedule)
                                 <li class="flex justify-between items-center bg-gray-50 rounded-lg p-3">
-                                    <span>{{ $schedule->subject->name }} <br> ({{ $schedule->start_time->format('H:i') }} - {{ $schedule->end_time->format('H:i') }})</span>
+                                    <span>
+                                        {{ $schedule->subject->name }} <br>
+                                        (
+                                        {{ optional($schedule->start_time)->format('H:i') ?? \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}
+                                        -
+                                        {{ optional($schedule->end_time)->format('H:i') ?? \Carbon\Carbon::parse($schedule->end_time)->format('H:i') }}
+                                        )
+                                    </span>
+
+
                                     <span class="text-xs text-gray-500">{{ $schedule->class->name }}</span>
                                 </li>
                             @endforeach

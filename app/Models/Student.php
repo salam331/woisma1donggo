@@ -18,7 +18,6 @@ class Student extends Model
         'birth_date',
         'gender',
         'school_class_id',
-        'parent_id',
         'photo',
         'academic_year',
     ];
@@ -53,8 +52,5 @@ class Student extends Model
         return $this->hasMany(Invoice::class);
     }
 
-    public function parent(): BelongsTo
-    {
-        return $this->belongsTo(ParentModel::class, 'parent_id');
-    }
 }
+

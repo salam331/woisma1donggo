@@ -139,7 +139,8 @@
                                 </td>
 
                                 <td data-label="Waktu" class="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
-                                    {{ $schedule->start_time->format('H:i') }} - {{ $schedule->end_time->format('H:i') }}
+                                    {{-- {{ $schedule->start_time->format('H:i') }} - {{ $schedule->end_time->format('H:i') }} --}}
+                                    {{ substr($schedule->start_time, 0, 5) }} - {{ substr($schedule->end_time, 0, 5) }}
                                 </td>
 
                                 <td data-label="Aksi" class="px-6 py-4 text-center text-sm font-medium">
