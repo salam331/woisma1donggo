@@ -22,8 +22,12 @@
 
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border dark:border-gray-700 p-6">
                     @if($classes->count() > 0)
-                        <div class="mb-6">
+                        <div class="mb-6 flex items-center justify-between">
                             <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Pilih Kelas untuk Melihat Nilai</h2>
+                            <a href="{{ route('guru.grades.create') }}"
+                               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition duration-200">
+                                <i class="fas fa-plus mr-2"></i>Tambah Nilai
+                            </a>
                         </div>
                         
                         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

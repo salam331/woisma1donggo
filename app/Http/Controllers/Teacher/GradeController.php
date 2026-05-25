@@ -11,6 +11,25 @@ use Illuminate\Support\Facades\Auth;
 class GradeController extends Controller
 {
     /**
+     * Show form for creating/updating grades in bulk (mirip admin.grades.create).
+     */
+    public function createGrade()
+    {
+        $teacher = Auth::user()->teacher;
+
+        if (!$teacher) {
+            return redirect()->route('guru.dashboard')->with('error', 'Data guru tidak ditemukan.');
+        }
+
+        // Get classes taught by this teacher
+        $classes = \App\Models\SchoolClass::whereHas('schedules', function ($query) use ($teacher) {
+            $query->where('teacher_id', $teacher->id);
+        })->with('teacher')->get();
+
+        return view('guru.grades.create', compact('classes'));
+    }
+
+    /**
      * Display a listing of the grades managed by the authenticated teacher.
      */
     public function index()

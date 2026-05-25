@@ -240,6 +240,7 @@ Route::middleware(['auth', 'role:guru'])
 
     // Grades (nilai)
     Route::get('/grades', [TeacherGradeController::class, 'index'])->name('grades.index');
+    Route::get('/grades/create', [TeacherGradeController::class, 'createGrade'])->name('grades.create');
     Route::get('/grades/class/{classId}', [TeacherGradeController::class, 'showClass'])->name('grades.class');
     Route::get('/grades/class/{classId}/subject/{subjectId}', [TeacherGradeController::class, 'showSubject'])->name('grades.subject');
     Route::get('/grades/class/{classId}/subject/{subjectId}/exam/{examId}', [TeacherGradeController::class, 'showExam'])->name('grades.exam');
